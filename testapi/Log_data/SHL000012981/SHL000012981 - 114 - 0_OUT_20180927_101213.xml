@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotorResponse_TypeDTO xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <MessageID>1</MessageID>
+  <MessageDescription>Your request was successfully processed!</MessageDescription>
+  <AccidentRiskPremium>14143.95</AccidentRiskPremium>
+  <TheftRiskPremium>553.05</TheftRiskPremium>
+  <StormRiskPremium>87.32</StormRiskPremium>
+  <WindscreenRiskPremium>242.51</WindscreenRiskPremium>
+  <RiskPremium>15026.82</RiskPremium>
+  <TargetLossRatio>0.73</TargetLossRatio>
+  <FixedCosts>344.88</FixedCosts>
+  <Premium_Out>2023.52</Premium_Out>
+  <AccidentFrequency_OwnDamage_TA>1</AccidentFrequency_OwnDamage_TA>
+  <AccidentSeverity_OwnDamage_TA>1.14575</AccidentSeverity_OwnDamage_TA>
+  <AccidentSeverity_Carhire_TA>0</AccidentSeverity_Carhire_TA>
+  <AccidentFrequency_Thirdparty_TA>1</AccidentFrequency_Thirdparty_TA>
+  <AccidentSeverity_Thirdparty_TA>1</AccidentSeverity_Thirdparty_TA>
+  <TheftFrequency_TA>1</TheftFrequency_TA>
+  <TheftSeverity_OwnDamage_TA>1.04534</TheftSeverity_OwnDamage_TA>
+  <TheftSeverity_Carhire_TA>0</TheftSeverity_Carhire_TA>
+  <StormFrequency_TA>1</StormFrequency_TA>
+  <StormSeverity_OwnDamage_TA>1.11925</StormSeverity_OwnDamage_TA>
+  <StormSeverity_Carhire_TA>0</StormSeverity_Carhire_TA>
+  <WindscreenFrequency_TA>1</WindscreenFrequency_TA>
+  <WindscreenSeverity_TA>1.10217</WindscreenSeverity_TA>
+  <AccidentFrequency_OwnDamage>0.71546</AccidentFrequency_OwnDamage>
+  <AccidentSeverity_OwnDamage>17000.01</AccidentSeverity_OwnDamage>
+  <AccidentSeverity_Carhire>0</AccidentSeverity_Carhire>
+  <AccidentFrequency_Thirdparty>1</AccidentFrequency_Thirdparty>
+  <AccidentSeverity_Thirdparty>208.51</AccidentSeverity_Thirdparty>
+  <TheftFrequency>0.71546</TheftFrequency>
+  <TheftSeverity_OwnDamage>739.47</TheftSeverity_OwnDamage>
+  <TheftSeverity_Carhire>0</TheftSeverity_Carhire>
+  <StormFrequency>0.71546</StormFrequency>
+  <StormSeverity_OwnDamage>109.04</StormSeverity_OwnDamage>
+  <StormSeverity_Carhire>0</StormSeverity_Carhire>
+  <WindscreenFrequency>1</WindscreenFrequency>
+  <WindscreenSeverity>220.03</WindscreenSeverity>
+  <SumInsured_Out>142900.0</SumInsured_Out>
+  <DiscountType_Out>P</DiscountType_Out>
+  <DiscountAmount_Out>0.0</DiscountAmount_Out>
+  <Discount_Loading_Out>D</Discount_Loading_Out>
+  <LimitedPremium_Out>2023.52</LimitedPremium_Out>
+  <FrequencyExcess_Out>0</FrequencyExcess_Out>
+  <SeverityExcess_Out>3500</SeverityExcess_Out>
+  <RE_Excess_Out>3500</RE_Excess_Out>
+  <CoverOption_Out>5</CoverOption_Out>
+  <LimitedExcess_Out>3500.0</LimitedExcess_Out>
+  <QuoteNumber>SHL000012981</QuoteNumber>
+  <ItemNumber>0</ItemNumber>
+  <SpecialRatedPremium>1794.88</SpecialRatedPremium>
+</MotorResponse_TypeDTO>

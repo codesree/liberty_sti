@@ -1,0 +1,168 @@
+{
+  "quoteHeader": {
+    "quoteKey": "string",
+    "quoteId": "string",
+    "productId": "string",
+    "productVersion": "string",
+    "quoteNumber": "string",
+    "srsId": "string",
+    "consultantCode": "string",
+    "premiums": [
+      {
+        "quoteId": "string",
+        "premiumType": "string",
+        "totalPremium": 0,
+        "excess": 0,
+        "voluntaryExcess": 0,
+        "sumInsured": 0,
+        "premiumComponents": [
+          {
+            "name": "string",
+            "amount": 0,
+            "taxable": true,
+            "taxType": "VAT"
+          }
+        ],
+        "referredItems": [
+          "string"
+        ],
+        "declineItems": [
+          "string"
+        ]
+      }
+    ]
+  },
+  "persons": [
+    {
+      "personKey": "string",
+      "personId": "string",
+      "bankAccounts": [
+        "string"
+      ],
+      "contacts": [
+        "string"
+      ],
+      "addresses": [
+        "string"
+      ],
+      "firstName": "string",
+      "surname": "string",
+      "initials": "string",
+      "title": "string",
+      "gender": "Male",
+      "dateOfBirth": "2018-08-02T07:44:05.195Z",
+      "identityDocumentType": "SAIdentityDocument",
+      "identityNumber": "string",
+      "idCountryOfIssue": "string",
+      "maritalStatus": "Single",
+      "isPensioner": true,
+      "isPolicyHolder": true
+    }
+  ],
+  "contacts": [
+    {
+      "contactKey": "string",
+      "contactId": "string",
+      "contactType": "MOBILENO",
+      "text": "string"
+    }
+  ],
+  "addresses": [
+    {
+      "addressKey": "string",
+      "addressId": "string",
+      "addressType": "POSTALADDRESS",
+      "addressLine1": "string",
+      "addressLine2": "string",
+      "suburb": "string",
+      "townOrCity": "string",
+      "postCode": "string",
+      "province": "string",
+      "streetNumber": 0
+    }
+  ],
+  "bankAccounts": [
+    {
+      "bankAccountKey": "string",
+      "bankAccountId": "string",
+      "accountNumber": "string",
+      "accountHolderName": "string",
+      "accountHolderSurname": "string",
+      "accountHolderInitials": "string",
+      "accountHolderIDNumber": "string",
+      "accountHolderBranchCode": "string",
+      "accountType": "CHEQUE",
+      "isValidated": true,
+      "validationResponse": "string"
+    }
+  ],
+  "quoteMembers": [
+    {
+      "personId": "string",
+      "isRequired": true,
+      "memberType": "POLICYHOLDER"
+    }
+  ],
+  "sections": [
+    {
+      "productSectionKey": "string",
+      "productSectionId": "string",
+      "productId": "string",
+      "parentSectionId": "string",
+      "name": "string",
+      "minItems": 0,
+      "maxItems": 0,
+      "items": [
+        {
+          "productItemKey": "string",
+          "productItemId": "string",
+          "parentItemId": "string",
+          "productId": "string",
+          "sectionId": "string",
+          "name": "string",
+          "sumInsured": 0,
+          "status": "string",
+          "description": "string",
+          "itemType": "string",
+          "requiredItemTypes": [
+            "string"
+          ],
+          "childItems": [
+            null
+          ],
+          "itemProperties": [
+            {
+              "itemPropertyId": "string",
+              "quoteItemId": "string",
+              "name": "string",
+              "value": {},
+              "valueType": "Number"
+            }
+          ],
+          "itemPremiums": [
+            {
+              "itemId": "string",
+              "premiumType": "string",
+              "totalPremium": 0,
+              "excess": 0,
+              "voluntaryExcess": 0,
+              "sumInsured": 0,
+              "premiumComponents": [
+                {
+                  "name": "string",
+                  "amount": 0,
+                  "taxable": true,
+                  "taxType": "VAT"
+                }
+              ],
+              "referralIndicator": "string",
+              "referralReason": "string",
+              "declineIndicator": "string",
+              "declineReason": "string"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

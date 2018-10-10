@@ -1,0 +1,6 @@
+2018-08-27 13:08:58,028 - test_chamber_2 - INFO - info from 2nd chamber
+2018-08-27 13:09:53,639 - test_chamber - INFO - info message
+2018-08-27 13:09:53,639 - test_chamber - WARNING - warn message
+2018-08-27 13:09:53,639 - test_chamber - ERROR - error message
+2018-08-27 13:09:53,639 - test_chamber - CRITICAL - critical message
+2018-08-27 13:09:53,640 - test_chamber_2 - INFO - info from 2nd chamber

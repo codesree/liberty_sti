@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+        <title>TEST CHAMBER - API GATEWAY </title>
+     <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+
+<body>
+
+<div class="container">
+<div class="well well-sm"><h4>TEST REPORT</h4>
+    <br>
+    {{ reporttitle }}</div> <br>
+    <button type="button" class="btn btn-primary">{{ suitename }}</button>
+<div class="row">
+    <div class="col-sm-8">
+      <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Test Case</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for testc in testcases %}
+
+     {% if testc.status == 'PASS' %}
+      <tr>
+        <td>{{ testc.testcase }}</td>
+          <td><button type="button" class="btn btn-success">{{ testc.status }}</button></td>
+      </tr>
+     {% elif testc.status == 'FAIL' %}
+      <tr>
+        <td>{{ testc.testcase }}</td>
+          <td><button type="button" class="btn btn-danger">{{ testc.status }}</button></td>
+      </tr>
+    {% else %}
+    {% endif %}
+    {% endfor %}
+
+
+    </tbody>
+  </table>
+    </div>
+</div>
+<div class="row">
+<ul class="list-group">
+
+    <li class="list-group-item">Total test cases covered:<code>{{ totaltests }}</code> -- Passed:<code>{{ totalpass }}</code> -- Failed:<code>{{ totalfail }}</code> </li>
+    <li class="list-group-item">Start time:<kbd>{{ starttime }}</kbd></li>
+    <li class="list-group-item">End time:<kbd>{{ endtime }}</kbd></li>
+    <li class="list-group-item">Time Taken(in Seconds): <kbd>{{ timetaken }}</kbd></li>
+</ul>
+</div>
+
+
+</div>
+
+</body>
+
+</html>
