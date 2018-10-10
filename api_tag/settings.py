@@ -35,6 +35,7 @@ SECRET_KEY = 'b(_=8mkl+hpoq#2)18uoeb+fzb17@qr#_mzmp4)x-$t@_*p0zp'
 DEBUG = True
 
 ALLOWED_HOSTS = ['api-env.qvvumpvvq4.us-east-1.elasticbeanstalk.com',
+                 'ec2-52-71-252-174.compute-1.amazonaws.com',
                  '127.0.0.1']
 
 
