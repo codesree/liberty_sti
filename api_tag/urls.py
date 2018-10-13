@@ -23,7 +23,6 @@ urlpatterns = [
     path('tag_home/', views.index, name='tag_home'),
     path('beanstalk_forum/', views.beanstalk_home, name='beanstalk_home'),
 
-    path('beanstalk_api/', views.beanstalk_quote, name='beanstalk_exe'),
     path('beanstalk_policy/', views.beanstalk_policy, name='beanstalk_exe2'),
 
     # Downloads
@@ -31,8 +30,9 @@ urlpatterns = [
     path('download_assetrr/', views.download_assetrr, name='download_assetrr'),
 
 
-    path('beanstalk_amendment/', views.beanstalk_amendment, name='beanstalk_amendment'),
-    path('test_execution/', views.beanstalk_quote, name='test_execution'),
+    path('beanstalk_amendment/', views.policy_endorsement, name='beanstalk_amendment'),
+    path('beanstalk_transition/', views.policy_versioning, name='beanstalk_transition'),
+
     path('tag_user_login/',views.tag_user_login,name="tag_user_login"),
     path('tag_user_logout/',views.tag_user_logout,name="tag_user_logout"),
     path('tag_register/',views.tag_register,name="tag_register"),
@@ -49,9 +49,11 @@ urlpatterns = [
     # -------------------- TEST CHAMBER - PATH ------------------------
     path('test_chamber_home/', views.test_chamber, name="test_chamber_home"),
     path('test_suite_home/',views.test_suite_home,name='test_suite_home'),
+    path('asset_end_to_end_home/',views.asset_end_to_end_home,name='asset_end_to_end_home'),
 
     # TEST SUITE FUNCTIONS:
     path('asset_homecontent_suite/',views.asset_homecon_suite,name='asset_homecontent_suite'),
+    path('asset_end_to_end/', views.asset_end_to_end, name='asset_end_to_end'),
     path('asset_vehicle_suite/',views.asset_vehicle_suite,name='asset_vehicle_suite'),
     path('asset_allrisks_suite/', views.asset_allrisk_suite, name='asset_allrisk_suite'),
     path('asset_personal_liability/', views.asset_personal_liability_suite, name='asset_personal_liability'),

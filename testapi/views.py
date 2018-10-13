@@ -10,8 +10,8 @@ from django.conf import settings
 from django.http import HttpResponse
 from wsgiref.util import FileWrapper
 
-from .tests import asset_homecontent,asset_vehicle,asset_allrisks,report_builder,log_builder
-from .test_gate import All_safe,gateway_process,Rating_engine
+from .tests import asset_homecontent,asset_vehicle,asset_allrisks,report_builder,log_builder,asset_api_process
+from .test_gate import All_safe,gateway_process,Rating_engine,Policy_api
 from .test_chamber.testunit import awscert
 
 import unittest
@@ -35,8 +35,10 @@ def test_chamber(request):
 
 
 def test_suite_home(request):
-
     return render(request,'asset_test_suite.html')
+
+def asset_end_to_end_home(request):
+    return render(request,'asset_api_flow.html')
 
 def asset_homecon_suite(request):
 
@@ -73,6 +75,26 @@ def asset_vehicle_suite(request):
 
     return render(request, 'asset_test_suite.html', {
         'tstat': 'mvdone',
+        'logfile': logfil,
+        'testrep': treprt
+    })
+
+
+def asset_end_to_end(request):
+    tcrun = unittest.TextTestRunner()
+
+    global logfil, treprt
+    logfil = 0
+    treprt = 0
+    # tcrun = HTMLTestRunner(output='/Users/isree/PycharmProjects/tag-build/api_tag/templates/', template='', )
+    # runner = HTMLTestRunner(output='example_suite')
+    tcrun.run(unittest.makeSuite(asset_api_process))
+    gs = All_safe()
+    logfil = gs.test_all_safe('getfile', 'test')
+    treprt = gs.test_all_safe('getreport', 'test')
+
+    return render(request, 'asset_api_flow.html', {
+        'tstat': 'assetdone',
         'logfile': logfil,
         'testrep': treprt
     })
@@ -169,6 +191,11 @@ def test_report(request):
     elif tname == "asset_personal_liability":
         tname = 'ASSET API FOR PERSONAL LIABILITY TEST RATING FATORS'
         rname = 'LIBERTY STI -  API GATEWAY '
+    elif tname == "quote_to_policy":
+        tname = 'ASSET API - END TO END FLOW - TEST PROCESS '
+        rname = 'LIBERTY STI -  API GATEWAY '
+
+
 
     return render(request,'test_report.html',{
                                                 'suitename':tname,
@@ -261,274 +288,46 @@ def download_assetrr(request):
 def beanstalk_home(request):
     return render(request, 'beanstalk_home.html')
 
-@login_required
-def beanstalk_quote(request):
-    #reqf_obj = Reqform()
-    #respf_obj = Respform()
-    global startmon
-    global createdq
-    incom_post = 0
-    incom_post_crq = False
-    incom_post_acq = False
-    incom_post_ctq = False
 
-    if request.method == 'POST':
-        crpost = request.POST.get('crpost')
-        acpost = request.POST.get('acpost')
-        ctpost = request.POST.get('ctpost')
-
-        print(crpost)
-
-        if crpost is not None:
-            #check offline mode
-            """api_req = request.POST.get('content')
-            offline_pro(api_req,request)
-            context_dict = {'text': 'API Gateway testing channel - TAG'}
-            return render(request, 'tag_home.html', context_dict)"""
-
-            # offline ends
-            incom_post = crpost
-            print("Posted...",incom_post)
-        elif acpost is not None:
-            incom_post = acpost
-        elif ctpost is not None:
-            incom_post = ctpost
-        else:
-            pass
-
-        print("AM IN")
-        api_req = request.POST.get('content')
-        print(api_req)
-
-        if incom_post == 'PROCEED WITH ACCEPT QUOTE':
-            Resp_data = con_gatepro(api_req, request, 'ac_quote')
-            incom_post_acq = True
-        elif incom_post == 'PROCEED WITH CREATE QUOTE':
-            createdq = api_req
-            Resp_data = con_gatepro(api_req, request, 'cr_quote')
-            incom_post_crq = True
-        elif incom_post == 'PROCEED WITH POLICY CONVERSION':
-            Resp_data = con_gatepro(api_req, request, 'conv_to_pol')
-            incom_post_ctq = True
-        else:
-            context_dict = {'text': 'API Gateway testing channel - TAG'}
-            return render(request, 'tag_home.html', context_dict)
-        rdata = json.loads(Resp_data)
-        print(type(rdata))
-        req_bankd = json.loads(api_req)
-        #chk_stat = rdata['bSuccess']
-        #print("data:",chk_stat,"type of data:",type(chk_stat))
-        #Decline part needs to be configured
-        #
-        # 1. PREPARE THE ACCEPT QUOTE JSON AND RELATE THEM
-        # 2. SEND TO TAG
-        #
-        if rdata['bSuccess'] is True:
-            if incom_post_crq is True:
-                global dispq
-                dispq = rdata['QuoteNumber']
-                get_bankd = startmon.acq_bankupd(req_bankd)
-                startmon = Monprocess('acq')
-                acq_dat = startmon.acq_procdata(get_bankd, dispq)
-                print("...............INSIDE CREATE PROCESS AND ACCEPT RETURN............................")
-                return render(request, 'beanstalk_exe.html', {
-                    'Req_data': acq_dat,
-                    'pantit': 'acq',
-                    'dispq': dispq,
-                    'Resp_data': Resp_data,
-                    'stat': 'Success'
-                })
-            if incom_post_acq is True:
-                dispq = dispq
-                startmon = Monprocess('ctp')
-                ctp_dat = startmon.ctp_procdata(dispq)
-                print("...............INSIDE ACCEPT PROCESS AND CONVERT RETURN............................")
-                return render(request, 'beanstalk_exe.html', {
-                    'Req_data': ctp_dat,
-                    'pantit': 'ctp',
-                    'dispq': dispq,
-                    'Resp_data': Resp_data,
-                    'stat': 'Success'
-                })
-            if incom_post_ctq is True:
-                dispq = req_bankd['QuoteNumber']
-                # startmon = Monprocess('ctp')
-                # ctp_dat = startmon.ctp_procdata(dispq)
-                log_policy(createdq,dispq, "tester")
-                print("...............INSIDE CONVERT PROCESS PROCESS AND DONE............................")
-                return render(request, 'beanstalk_exe.html', {
-                    'Req_data': 'PROCESS COMPLETED',
-                    'pantit': 'ctp',
-                    'dispp': dispq,
-                    'Resp_data': Resp_data,
-                    'stat': 'Success'
-                })
-        elif rdata['bSuccess'] is False:
-            if incom_post_crq is True:
-                dispq = False
-                return render(request, 'beanstalk_exe.html', {
-                    'Req_data': 'Unable process the Accept quote due to an error.... See below',
-                    'pantit': 'crq',
-                    'dispq': dispq,
-                    'Resp_data': Resp_data,
-                    'stat': 'Failed',
-                    'restart':'yes'
-                })
-            if incom_post_acq is True:
-                dispq = False
-                return render(request, 'beanstalk_exe.html', {
-                    'Req_data': 'Unable to accept the quote due to an error.... See below',
-                    'pantit': 'acq',
-                    'dispq': dispq,
-                    'Resp_data': Resp_data,
-                    'stat': 'Failed',
-                    'restart':'yes'
-
-                })
-            if incom_post_acq is True:
-                dispq = False
-                return render(request, 'beanstalk_exe.html', {
-                    'Req_data': 'Cannot convert to policy due to an error.... See below',
-                    'pantit': 'ctp',
-                    'dispq': dispq,
-                    'Resp_data': Resp_data,
-                    'stat': 'Failed',
-                    'restart':'yes'
-
-                })
-        else:
-            pass
-
-
-    else:
-        startmon = Monprocess('crq')
-        crq_dat = startmon.procdata()
-        print("type of create_quote data:",type(crq_dat))
-        return render(request, 'beanstalk_exe.html',
-                      {
-                          'Req_data': crq_dat,
-                          'pantit':'crq'
-                      })
-
-
-def con_gatepro(api_req,request,func):
-    do_req = api_req
-    funcp = func
-    head = {'Content-Type': 'application/json', 'Accept': 'application/json'}
-
-    if funcp == 'cr_quote':
-        response = requests.post("http://19289iisjnb001v/Quotes/quotes", data=do_req, headers=head)
-    elif funcp == 'ac_quote':
-        head = {'Content-Type': 'application/json', 'Accept': 'application/json'}
-        response = requests.post("http://19289iisjnb001v/Quotes/acceptpolicy", data=do_req, headers=head)
-    elif funcp == 'conv_to_pol':
-        head = {'Content-Type': 'application/json', 'Accept': 'application/json'}
-        response = requests.post("http://19289iisjnb001v/Quotes/policies", data=do_req, headers=head)
-    elif funcp == 'amend_quote':
-        head = {'Content-Type': 'application/json', 'Accept': 'application/json'}
-        response = requests.post("http://19289iisjnb001v/Quotes/policies", data=do_req, headers=head)
-    elif funcp == 'acdec_amend':
-        head = {'Content-Type': 'application/json', 'Accept': 'application/json'}
-        response = requests.post("http://19289iisjnb001v/Policies/acceptpolicyamendment", data=do_req, headers=head)
-    else:
-        context_dict = {'text': 'API Gateway testing channel - TAG'}
-        return render(request, 'tag_home.html', context_dict)
-
-    print("Response  from API Gateway...........", response.status_code)
-    do_resp = response.json()
-    do_resp = json.dumps(do_resp, indent=5)
-    print(do_resp)
-    print("Type of response data:", type(do_resp))
-    return do_resp
-
-
-def con_gatepro_get(reqn,func,request):
-    gfunc = func
-    vreqp = reqn
-
-    if gfunc == 'view_policy':
-
-        head = {'Content-Type': 'application/json', 'Accept': 'application/json'}
-        response = requests.get("http://19289iisjnb001v/Policies/policies/"+vreqp+"/200/100/1", headers=head)
-        print("Response  from API Gateway...........", response.status_code)
-        do_resp = response.json()
-        do_resp = json.dumps(do_resp, indent=5)
-        print(do_resp)
-        print("Type of response data:", type(do_resp))
-        return do_resp
-
-    else:
-
-        pass
 
 
 @login_required
-def beanstalk_policy(request):
-    try:
-        request.method == 'POST'
-        ampost = request.POST.get('ampost')
-        amlpost = request.POST.get('amlpost')
-
-        print(amlpost)
-        print(ampost)
-
-
-        if ampost == 'Proceed':
-            policyn = request.POST.get('policyn')
-
-        elif amlpost == 'Proceed':
-            policyn = request.POST.get('psel')
-
-        amdpol = gateway_process('view_policy')
-        amdata = amdpol.view_policy(policyn)
-        #offline process - amend
-        """
-        amdata = offline_adder(selected_policy)
-        return render(request, 'beanstalk_amendment.html',{
-            "amd_data":amdata,
-            "pantit": "amq"
-        })"""
-        #offline ends
-
-
-        return render(request, 'beanstalk_amendment.html',{
-            "amd_data":amdata,
-            "pantit": "amq"
-        })
-    except:
-        startpol = Policy_starter("get_policy")
-        policy_list = startpol.policy_base()
-        return render(request, 'beanstalk_exe2.html', {"polist": policy_list})
-
-
 def beanstalk_asset(request):
 
     try:
         assert request.method == 'POST'
 
-
-        motor_sel = request.POST.getlist("motor[]")
+        motor_sel   = request.POST.getlist("motor[]")
         content_sel = request.POST.getlist("content[]")
         allrisk_sel = request.POST.getlist("allrisk[]")
+        building_sel = request.POST.getlist("building[]")
+        persliab_sel = request.POST.getlist("persliab[]")
+
 
         print(motor_sel)
         print(content_sel)
         print(allrisk_sel)
+        print(building_sel)
+        print(persliab_sel)
 
         try:
 
             assert (motor_sel != [] or content_sel != [] or allrisk_sel != [])
 
             aops = asset_manager()
+            print('motor selection',motor_sel)
             motord = aops.get_vehicles('get_vehicle', motor_sel)
 
             asset_dict = {
                             'motor_list':motord,
                             'content_list':content_sel,
-                            'allrisk_list':allrisk_sel
+                            'allrisk_list':allrisk_sel,
+                'building_list': building_sel,
+                'persliab_list': persliab_sel
                          }
 
             asset_api_req = aops.asset_composer(asset_dict)
+            print(asset_api_req)
 
             return render(request, 'beanstalk_asset_quoting.html',{'pantit':'crq','Req_data':asset_api_req})
 
@@ -539,11 +338,15 @@ def beanstalk_asset(request):
 
     except:
 
-        return render(request, 'beanstalk_asset_home.html')
+        getm = asset_manager()
+        carslist = getm.process_carlist()
+        print(carslist)
+        return render(request, 'beanstalk_asset_home.html',{'carlist':carslist})
 
 
+@login_required
 def asset_execution(request):
-    global asset_rrl
+    global asset_rrl,aquotn
 
     # ENTERING CREATE QUOTE
 
@@ -552,6 +355,8 @@ def asset_execution(request):
         # testing...
         # time.sleep(5)
         # return render(request, 'beanstalk_asset_home.html')
+
+        print("Hello....")
 
         alog = log_builder('asset_api')
         logger = alog.set_log('INFO', 'noformat')
@@ -562,39 +367,71 @@ def asset_execution(request):
         asset_req = request.POST.get('content')
         logger.info(asset_req)
         gops = gateway_process('asset_api')
+        print("hi..")
         asset_resp = gops.api_exec(asset_req)
-
+        print("asset response..",asset_resp)
         logger.info('API Response(Asset API):--')
 
-        print(type(asset_resp))
+        print(asset_resp)
 
-        if (type(asset_resp)) != str:
-            asset_resp = json.loads(asset_resp)
+        asset_resp_dat = asset_resp[0]
+        asset_respcode = asset_resp[1]
 
-        if asset_resp:
+        # assert asset_resp_dat['quoteNumber']
+        # aquotn = asset_resp_dat['quoteNumber']
+        # print("quote number", aquotn)
+        #
+        # asset_resp_dat = json.dumps(asset_resp_dat, indent=5)
+        #
+        # print(asset_resp_dat)
+        #
+        # logger.info(asset_resp_dat)
+        # asset_rrl = alog.return_file()
+        #
+        # # get Calculate prodata quote....
+        # aops = asset_manager()
+        # accept_q = aops.calculate_prorata(aquotn)
+        # print(accept_q)
+        # print('calculate prorata:', accept_q)
+        #
+        # return render(request, 'beanstalk_asset_quoting.html', {
+        #     'pantit': 'acq',
+        #     'Resp_data': asset_resp_dat,
+        #     'dispq': aquotn,
+        #     'Req_data': accept_q,
+        #     'result': 'Success',
+        #     'stat': asset_respcode,
+        #     'run_trace': 'go'
+        # })
+
+
+        if asset_respcode == 200:
             try:
-                assert asset_resp['quoteNumber']
-                aquotn = asset_resp['quoteNumber']
+                assert asset_resp_dat['quoteNumber']
+                aquotn = asset_resp_dat['quoteNumber']
+                print("quote number",aquotn)
 
-                asset_resp = json.dumps(asset_resp, indent=5)
+                asset_resp_dat = json.dumps(asset_resp_dat, indent=5)
 
-                logger.info(asset_resp)
+                logger.info(asset_resp_dat)
                 asset_rrl = alog.return_file()
 
                 #get Calculate prodata quote....
                 aops = asset_manager()
                 accept_q = aops.calculate_prorata(aquotn)
 
+                print('calculate prorata:',accept_q)
+
                 return render(request, 'beanstalk_asset_quoting.html', {
                                                                          'pantit': 'acq',
-                                                                         'Resp_data': asset_resp,
+                                                                         'Resp_data': asset_resp_dat,
                                                                          'dispq':aquotn,
                                                                          'Req_data':accept_q,
-                                                                         'stat':'success',
+                                                                         'result':'Success',
+                                                                         'stat': asset_respcode,
                                                                          'run_trace':'go'
                                                                        })
             except:
-
                 print(type(asset_resp))
                 if type(asset_resp) != str:
                     asset_resp = json.dumps(asset_resp, indent=5)
@@ -605,9 +442,26 @@ def asset_execution(request):
                     'pantit': 'crq',
                     'Resp_data':asset_resp,
                     'Req_data': 'Error in processing your quote. Please see the below response from API Gateway',
-                    'stat': 'fail'
-                })
+                    'stat': asset_respcode,
+                    'result': 'Fail'
 
+                })
+        else:
+
+            print(type(asset_resp))
+            if type(asset_resp) != str:
+                asset_resp = json.dumps(asset_resp, indent=5)
+
+            logger.info(asset_resp)
+            asset_rrl = alog.return_file()
+            return render(request, 'beanstalk_asset_quoting.html', {
+                'pantit': 'crq',
+                'Resp_data': asset_resp,
+                'Req_data': 'Error in processing your quote. Please see the below response from API Gateway',
+                'stat': asset_respcode,
+                'result': 'Fail'
+
+            })
     except:
         pass
 
@@ -630,46 +484,52 @@ def asset_execution(request):
 
         logger.info('API Response(Asset API):--')
 
-        accept_resp = json.loads(accept_resp)
-        print("json loads ok")
-        print(accept_resp['referenceNumber'])
+        print(accept_resp)
+
+        accept_resp_dat = accept_resp[0]
+        accept_respcode = accept_resp[1]
+        print(accept_resp_dat['referenceNumber'])
 
         if accept_resp:
             try:
-                assert accept_resp['referenceNumber']
-                aquotr = accept_resp['referenceNumber']
+                assert accept_resp_dat['referenceNumber']
+                aquotr = accept_resp_dat['referenceNumber']
 
-                accept_resp = json.dumps(accept_resp, indent=5)
+                accept_resp_dat = json.dumps(accept_resp_dat, indent=5)
 
-                logger.info(accept_resp)
+                logger.info(accept_resp_dat)
                 asset_rrl = clog.return_file()
 
                 return render(request, 'beanstalk_asset_quoting.html', {
                     'pantit':'ctp',
-                    'Resp_data': accept_resp,
+                    'Resp_data': accept_resp_dat,
                     'dispq': aquotr,
                     'go_conv':'go',
-                    'stat': 'success'
+                    'stat': accept_respcode,
+                    'result': 'Success'
                 })
             except:
 
-                accept_resp = json.dumps(accept_resp, indent=5)
+                accept_resp_dat = json.dumps(accept_resp_dat, indent=5)
 
-                logger.info(accept_resp)
+                logger.info(accept_resp_dat)
                 asset_rrl = clog.return_file()
                 return render(request, 'beanstalk_asset_quoting.html', {
                     'pantit': 'acq',
-                    'Resp_data': accept_resp,
+                    'Resp_data': accept_resp_dat,
                     'Req_data': 'Error while accept quoting. Please see the below response from API Gateway',
-                    'stat': 'fail'
+                    'stat': accept_respcode,
+                    'result': 'Fail'
                 })
 
     except:
+
         pass
 
     # ENTERING CONVERT QUOTE TO POLICY
 
     try:
+
         assert request.method == 'POST' and request.POST.get('ctpost')
 
         policy_n = request.POST.get('convtop')
@@ -687,41 +547,301 @@ def asset_execution(request):
 
         logger.info('API Response(Asset API):--')
 
-        conv_resp = json.loads(conv_resp)
+        conv_resp_dat = conv_resp[0]
+        conv_respcode = conv_resp[1]
+
 
         if conv_resp:
             try:
-                assert conv_resp['policyNumber']
-                aquotr = conv_resp['policyNumber']
 
-                conv_resp = json.dumps(conv_resp, indent=5)
+                assert conv_resp_dat['policyNumber']
+                aquotr = conv_resp_dat['policyNumber']
 
-                logger.info(conv_resp)
+
+                log_policy('Req quote data',aquotr, "tester")
+
+                conv_resp_dat = json.dumps(conv_resp_dat, indent=5)
+
+                logger.info(conv_resp_dat)
                 asset_rrl = dlog.return_file()
+
+
 
                 return render(request, 'beanstalk_asset_quoting.html', {
                     'pantit': 'ctp',
-                    'Resp_data': conv_resp,
+                    'Resp_data': conv_resp_dat,
                     'dispq': aquotr,
                     'go_conv':'complete',
-                    'stat': 'success'
+                    'stat': conv_respcode,
+                    'result': 'Success'
                 })
             except:
 
-                conv_resp = json.dumps(conv_resp, indent=5)
+                conv_resp_dat = json.dumps(conv_resp_dat, indent=5)
 
-                logger.info(conv_resp)
+                logger.info(conv_resp_dat)
                 asset_rrl = dlog.return_file()
                 return render(request, 'beanstalk_asset_quoting.html', {
                     'pantit': 'ctp',
-                    'Resp_data': conv_resp,
+                    'Resp_data': conv_resp_dat,
                     'go_conv': 'go',
                     'Req_data': 'Error while accept quoting. Please see the below response from API Gateway',
-                    'stat': 'fail'
+                    'stat': conv_respcode,
+                    'result': 'Fail'
                 })
 
     except:
         pass
+
+    # ENTERING AMEND QUOTE:
+
+    try:
+
+        assert request.method == 'POST' and request.POST.get('amqpost')
+
+        print("Inside Amend quote!!..")
+
+        amquote = aquotn
+        print(amquote)
+
+        amdq = gateway_process('amend_quote')
+        amdq_data = amdq.view_quote(amquote)
+
+        amdq_data = amdq_data[0]
+
+        amdq_data = json.dumps(amdq_data, indent=5)
+
+        return render(request, 'beanstalk_asset_quoting.html', {'pantit': 'amdq', 'Req_data': amdq_data})
+
+    except:
+
+        return render(request, 'beanstalk_asset_quoting.html')
+
+
+
+@login_required
+def beanstalk_policy(request):
+    try:
+        request.method == 'POST'
+        ampost = request.POST.get('ampost')
+        amlpost = request.POST.get('amlpost')
+
+        print(amlpost)
+        print(ampost)
+
+
+        if ampost == 'Proceed':
+            policyn = request.POST.get('policyn')
+
+        elif amlpost == 'Proceed':
+            policyn = request.POST.get('psel')
+
+        amdpol = gateway_process('view_policy')
+        amdata = amdpol.view_policy(policyn)
+
+        amdata = amdata[0]
+
+        amdata = json.dumps(amdata,indent=5)
+        #offline process - amend
+        """
+        amdata = offline_adder(selected_policy)
+        return render(request, 'beanstalk_amendment.html',{
+            "amd_data":amdata,
+            "pantit": "amq"
+        })"""
+        #offline ends
+
+
+        return render(request,'beanstalk_amendment.html',{
+            "amd_data":amdata,
+            'amdresp_data': '',
+            "pantit": "amdp"
+        })
+    except:
+        print("Generating the policy list..")
+        startpol = Policy_starter("get_policy")
+        policy_list = startpol.policy_base()
+        print(policy_list)
+        return render(request, 'beanstalk_exe2.html', {"polist": policy_list})
+
+
+
+
+
+@login_required
+def policy_endorsement(request):
+    global amd_reqv1,policynum,asset_rrl,amd_reqv2
+
+    try:
+        assert request.method == 'POST' and request.POST.get('amdpost')
+        print("Policy Endorsement process started...")
+        amd_reqv1 = request.POST.get('content')
+
+        print(amd_reqv1)
+        print(type(amd_reqv1))
+        alog = log_builder('policy_api')
+        logger = alog.set_log('INFO', 'noformat')
+
+        logger.info('POLICY ENDORSEMENT LOG ---------')
+        logger.info('API Request(Amend Policy):--')
+        logger.info(amd_reqv1)
+
+
+        amd_reqv1d = json.loads(amd_reqv1)
+        pol_head = amd_reqv1d['policyHeader']
+        policynum = pol_head['policyNumber']
+        #
+        # view_pol = pol_head['policyNumber']
+        # print(view_pol)
+
+        proc_pol = gateway_process('process_policy')
+
+        amdpol = proc_pol.process_policy(amd_reqv1)
+
+        print("asset response..", amdpol)
+        logger.info('API Response(Amend Policy ):--')
+
+        print(amdpol)
+
+        amdpol_dat = amdpol[0]
+        amdpol_respcode = amdpol[1]
+
+
+        if amdpol_respcode == 200:
+            try:
+
+                #print("quote number",aquotn)
+
+                amdpol_dat = json.dumps(amdpol_dat, indent=5)
+
+                logger.info(amdpol_dat)
+                asset_rrl = alog.return_file()
+
+
+                print(type(amdpol_dat))
+
+                return render(request, 'beanstalk_amendment.html',{
+                                                                         'pantit':'adpa',
+                                                                         'amdresp_data': amdpol_dat,
+                                                                         'dispq':'POLICY',
+                                                                         'result':'Success',
+                                                                         'stat': amdpol_respcode,
+                                                                         'run_trace':'go'
+                                                                    })
+            except:
+
+                return render(request, 'beanstalk_exe2.html')
+
+
+        else:
+
+            print(type(amdpol_dat))
+            if type(amdpol_dat) != str:
+                amdpol_dat = json.dumps(amdpol_dat, indent=5)
+
+            logger.info(amdpol_dat)
+            asset_rrl = alog.return_file()
+            return render(request, 'beanstalk_amendment.html', {
+                'pantit': 'amdp',
+                'Resp_data': amdpol_dat,
+                'Req_data': 'Error in processing your Policy amendment. Please see the below response from API Gateway',
+                'stat': amdpol_respcode,
+                'result': 'Fail'
+
+            })
+
+
+    except:
+        pass
+
+    try:
+        assert request.method == 'POST' and request.POST.get('acdpost')
+
+        print("Accept/Decline process started....")
+        acdval = request.POST.get('adsel')
+        print(acdval)
+
+        if acdval == "Accept":
+            acdval = "True"
+        elif acdval == "Decline":
+            acdval = "False"
+
+        alog = log_builder('accept_policy')
+        logger = alog.set_log('INFO', 'noformat')
+
+        logger.info('POLICY ENDORSEMENT LOG ---------')
+        logger.info('API Request(Accept/Decline Policy Endorsement):--')
+        logger.info(acdval)
+
+
+        policyn = policynum
+
+        acdpol = gateway_process('accept_policy')
+        acdresp = acdpol.accept_policyendorse(policynum,acdval)
+
+        acdresp_dat = acdresp[0]
+        acdrespcode = acdresp[1]
+
+
+
+        if acdrespcode == 200:
+            try:
+                #print("quote number",aquotn)
+
+                acdpol_dat = json.dumps(acdresp_dat, indent=5)
+
+                amd_reqv2 = acdpol_dat
+
+                logger.info(acdpol_dat)
+                asset_rrl = alog.return_file()
+
+                print(type(acdpol_dat))
+
+                return render(request, 'beanstalk_amendment.html',{
+                                                                         'pantit':'comp',
+                                                                         'amdresp_data': acdpol_dat,
+                                                                         'dispq':policynum,
+                                                                         'result':'Success',
+                                                                         'stat': acdrespcode,
+                                                                         'run_trace':'go'
+                                                                    })
+            except:
+                return render(request, 'beanstalk_exe2.html')
+
+
+        else:
+
+            print(type(acdresp_dat))
+            if type(acdresp_dat) != str:
+                acdpol_dat = json.dumps(acdresp_dat, indent=5)
+
+            logger.info(amdpol_dat)
+            asset_rrl = alog.return_file()
+            return render(request, 'beanstalk_amendment.html', {
+                'pantit': 'comp',
+                'amdresp_data': acdpol_dat,
+                'dispq': policynum,
+                'result': 'Fail',
+                'stat': acdrespcode,
+                'run_trace': 'go'
+
+            })
+
+    except:
+        pass
+
+
+
+
+def policy_versioning(request):
+
+
+    return render(request,'beanstalk_transition.html',{
+
+        "bview_data":amd_reqv1,
+        "aview_data":amd_reqv2
+
+    })
 
 
 def inspector_tag(request):
@@ -765,11 +885,6 @@ def inspector_tag(request):
         pass
 
     return render(request,'inspector_home.html')
-
-
-
-
-
 
 @login_required
 def beanstalk_amendment(request):
@@ -917,7 +1032,7 @@ def tag_user_logout(request):
 
 
 def log_policy(quotes,policy_n,tuser):
-    logpol = Policy_starter("log_policy")
+    logpol = Policy_api("log_policy")
     logpol.policy_log(tuser,policy_n,quotes)
 
 

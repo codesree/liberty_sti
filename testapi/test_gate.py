@@ -8,10 +8,10 @@ from oauthlib import oauth2
 from requests.auth import HTTPBasicAuth
 
 
+
 class Asset_stack():
     def __init__(self):
         global con
-        # db = MongoClient()
         db = MongoClient('mongodb://ds117423.mlab.com:17423',
                       username='srekanth',
                       password='liberty@123',
@@ -28,22 +28,58 @@ class Asset_stack():
             if tinfo == "rate_enums":
                 print('ucount:',ucount)
                 for factnum in rfact.values():
-                    col.update({'itemProperties.name': "" + rkey + ""},
-                               {'$set': {
-                                   'itemProperties.$.value': factnum
-                               }
-                               }
-                               )
-                    self.process_homecontent_item(ucount)
+                    if rkey == "discountType":
+                        col.update({"itemType" : "HomeContent"},
+                                   {'$set': {
+                                       'discountDetails.discountType' : factnum
+                                   }
+                                   }
+                                   )
+                        self.process_allrisks_item(ucount)
+
+                    elif rkey == "policyFrequency":
+                        col.update({"itemType" : "HomeContent"},
+                                   {'$set': {
+                                       'policyFrequency' : factnum
+                                   }
+                                   }
+                                   )
+                        self.process_allrisks_item(ucount)
+                    else:
+                        col.update({'itemProperties.name': "" + rkey + ""},
+                                   {'$set': {
+                                       'itemProperties.$.value': factnum
+                                   }
+                                   }
+                                   )
+                        self.process_homecontent_item(ucount)
             elif tinfo == "rate_keys":
                 for factnum in rfact.keys():
-                    col.update({'itemProperties.name': "" + rkey + ""},
-                               {'$set': {
-                                   'itemProper  ties.$.value': "" + factnum + ""
-                               }
-                               }
-                               )
-                    self.process_homecontent_item(ucount)
+                    if rkey == "discountType":
+                        col.update({"itemType": "HomeContent"},
+                                   {'$set': {
+                                       'discountDetails.discountType': factnum
+                                   }
+                                   }
+                                   )
+                        self.process_allrisks_item(ucount)
+
+                    elif rkey == "policyFrequency":
+                        col.update({"itemType": "HomeContent"},
+                                   {'$set': {
+                                       'policyFrequency': factnum
+                                   }
+                                   }
+                                   )
+                        self.process_allrisks_item(ucount)
+                    else:
+                        col.update({'itemProperties.name': "" + rkey + ""},
+                                   {'$set': {
+                                       'itemProperties.$.value': factnum
+                                   }
+                                   }
+                                   )
+                        self.process_homecontent_item(ucount)
             ucount = ucount + 1
 
     def update_allrisks_item(self, rkey, rfact, rcount, tinfo):
@@ -63,6 +99,16 @@ class Asset_stack():
                                    }
                                    )
                         self.process_allrisks_item(ucount)
+
+                    elif rkey == "policyFrequency":
+                        col.update({"itemType" : "AllRisk"},
+                                   {'$set': {
+                                       'policyFrequency' : factnum
+                                   }
+                                   }
+                                   )
+                        self.process_allrisks_item(ucount)
+
                     else:
                         col.update({'itemProperties.name': "" + rkey + ""},
                                    {'$set': {
@@ -77,6 +123,15 @@ class Asset_stack():
                         col.update({"itemType": "AllRisk"},
                                    {'$set': {
                                        'discountDetails.discountType': factnum
+                                   }
+                                   }
+                                   )
+                        self.process_allrisks_item(ucount)
+
+                    elif rkey == "policyFrequency":
+                        col.update({"itemType" : "AllRisk"},
+                                   {'$set': {
+                                       'policyFrequency' : factnum
                                    }
                                    }
                                    )
@@ -368,11 +423,10 @@ class Asset_stack():
                    )
 
 
-
-class gateway_process():
+class external_gateway_process():
 
     def __init__(self,func):
-        global req_url,head
+        global req_url,head,auth_tok
         funcp = func
 
         #gateway nonprod - oauth
@@ -386,13 +440,18 @@ class gateway_process():
                 }
         if funcp == "asset_api":
             #gateway non-prod:
+            auth_tok = self.auth_token()
             req_url = 'https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/Process'
         elif funcp == "calculate_prorata":
+            auth_tok = self.auth_token()
             req_url = 'https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/CalculateProRata'
         elif funcp == "convert_to_policy":
+            auth_tok = self.auth_token()
             req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy//"
         elif funcp == "view_policy":
+            auth_tok = self.auth_token()
             req_url = "http://prbk-pa001sap4v/Insurance.Quoting2/api/Policies/"
+
 
 
 
@@ -433,67 +492,231 @@ class gateway_process():
 
         do_req = api_req
 
+        response = requests.post(req_url, data=do_req, headers=head)
+
+        print("Response  from API Gateway...........", response.status_code)
+        do_resp = response.json()
+        do_resp = json.dumps(do_resp, indent=5)
+
+        print(do_resp)
+        print("Type of response data:", type(do_resp))
+        return do_resp
+
+    def convtop_exec(self,policy_n):
+        req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy/"
+        req_url = req_url + policy_n
+        response = requests.post(req_url,headers=head)
+
+
+        print("Response  from API Gateway...........", response.status_code)
+        do_resp = response.json()
+        do_resp = json.dumps(do_resp, indent=5)
+
+        print(do_resp)
+        print("Type of response data:", type(do_resp))
+        return do_resp
+
+    def view_policy(self,policy_n):
+        vpolicy = policy_n
+
+        vpolicy_url = req_url +policy_n
+        response = requests.get(vpolicy_url,headers =head)
+        do_resp = response.json()
+        do_resp = json.dumps(do_resp, indent=5)
+
+        print(do_resp)
+        print("Type of response data:", type(do_resp))
+        return do_resp
+
+
+class gateway_process():
+
+    def __init__(self,func):
+        global req_url,head
+        funcp = func
+
+        #gateway nonprod - oauth
+        auth_tok = self.auth_token()
+        oauthtok = 'Bearer '+ auth_tok
+
+        head = {'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'authorization': oauthtok,
+                'x-ibm-client-id': "3d67e856-8438-4ffa-a25e-b61058bc821c"
+                }
+        if funcp == "asset_api":
+            #gateway non-prod:
+            req_url = 'https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/Process'
+        elif funcp == "calculate_prorata":
+            req_url = 'https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/CalculateProRata'
+        elif funcp == "convert_to_policy":
+            req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy//"
+        elif funcp == "view_policy":
+            req_url = "http://prbk-pa001sap4v/Insurance.Quoting2/api/Policies/"
+        elif funcp == "amend_quote":
+            req_url = "http://prbk-pa001sap4v/Insurance.Quoting2/api/Quotes/"
+        elif funcp == "process_policy":
+            req_url = "http://prbk-pa001sap4v/Insurance.Quoting2/api/Policies/Process"
+        elif funcp == "accept_policy":
+            req_url = "http://prbk-pa001sap4v/Insurance.Quoting2/api/Policies/AcceptPolicyAmendment/"
+
+    def auth_token(self):
+
+        url = 'https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/sbsa/oauth/oauth2/token'
+
+        head = {
+            'content-type': "application/x-www-form-urlencoded",
+            'accept': "application/json",
+            'x-ibm-client-id': '3d67e856-8438-4ffa-a25e-b61058bc821c',
+        }
+
+        payload = "grant_type=client_credentials&scope=quote"
+
+        user = '3d67e856-8438-4ffa-a25e-b61058bc821c'
+        passw = 'T6kC0mG0fW3xY1cD5kH3oF5wB0qW5fI7iQ8qF0lR2jO7wT7uM3'
+
+        authin = HTTPBasicAuth(username=user, password=passw)
+        response = requests.post(url, data=payload, headers=head, auth=authin)
+
+        print("Response  from API Gateway...........", response.status_code)
+
+        do_resp = response.json()
+        auth_tok = do_resp['access_token']
+        print(type(do_resp))
+
+        do_resp = json.dumps(do_resp, indent=5)
+
+        print(do_resp)
+        print(type(do_resp))
+
+        return auth_tok
+
+    def api_exec(self,api_req):
+
+
+        do_req = api_req
+
+        print(do_req)
+        print(req_url)
+        print(head)
         try:
             response = requests.post(req_url, data=do_req, headers=head)
 
             print("Response  from API Gateway...........", response.status_code)
+            statcode = response.status_code
             do_resp = response.json()
-            do_resp = json.dumps(do_resp, indent=5)
 
             print(do_resp)
             print("Type of response data:", type(do_resp))
-            return do_resp
-
+            return do_resp,statcode
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
             print('Connection time out....Server is down..')
-            do_resp = "Connection timed out...SERVER IS DOWN !!..Please try again late..r"
-            return do_resp
+            do_resp = "Connection timed out...SERVER IS DOWN !!..Please try again later."
+            return do_resp,statcode
+
 
     def convtop_exec(self,policy_n):
-        req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy/"
+
+        req_url = "http://prbk-pa001sap4v/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy/"
         req_url = req_url + policy_n
 
         try:
             response = requests.post(req_url, headers=head)
 
             print("Response  from API Gateway...........", response.status_code)
+            statcode = response.status_code
             do_resp = response.json()
-            do_resp = json.dumps(do_resp, indent=5)
 
             print(do_resp)
             print("Type of response data:", type(do_resp))
-            return do_resp
-
+            return do_resp, statcode
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
             print('Connection time out....Server is down..')
-            do_resp = "Connection timed out...SERVER IS DOWN !!..Please try again later"
-            return do_resp
+            do_resp = "Connection timed out...SERVER IS DOWN !!..Please try again later."
+            return do_resp, statcode
+
 
     def view_policy(self,policy_n):
         vpolicy = policy_n
-        vpolicy_url = req_url +policy_n
 
+        vpolicy_url = req_url +policy_n
         try:
 
             response = requests.get(vpolicy_url, headers=head)
+            statcode = response.status_code
             do_resp = response.json()
-            do_resp = json.dumps(do_resp, indent=5)
 
             print(do_resp)
             print("Type of response data:", type(do_resp))
-            return do_resp
-
+            return do_resp, statcode
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-
             print('Connection time out....Server is down..')
-            do_resp = "Connection timed out...SERVER IS DOWN !!..Please try again later"
+            do_resp = "Connection timed out...SERVER IS DOWN !!..Please try again later."
+            return do_resp, statcode
+
+    def view_quote(self,quote_n):
+        vquote = quote_n
+
+        vquote_url = req_url +vquote
+        try:
+            response = requests.get(vquote_url, headers=head)
+            statcode = response.status_code
+            do_resp = response.json()
+
+            print(do_resp)
+            print("Type of response data:", type(do_resp))
+            return do_resp, statcode
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+            print('Connection time out....Server is down..')
+            do_resp = "Connection timed out...SERVER IS DOWN !!..Please try again later."
+            return do_resp, statcode
+
+    def process_policy(self,api_req):
+
+        do_req = api_req
+
+        print(req_url)
+        print(head)
+        try:
+            response = requests.post(req_url, data=do_req, headers=head)
+
+            print("Response  from API Gateway...........", response.status_code)
+            statcode = response.status_code
+            do_resp = response.json()
+
+            print(do_resp)
+            print("Type of response data:", type(do_resp))
+            return do_resp,statcode
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+            print('Connection time out....Server is down..')
+            do_resp = "Connection timed out...SERVER IS DOWN !!..Please try again later."
+            return do_resp,statcode
+
+    def accept_policyendorse(self,policynum,decision):
+
+        policynum = policynum
+
+        if decision == "True":
+            acdpol_url = req_url + policynum + "/true"
+        elif decision == "False":
+            acdpol_url = req_url + policynum + "/false"
 
 
+        try:
+            print(acdpol_url)
+            response = requests.post(acdpol_url, headers=head)
 
+            print("Response  from API Gateway...........", response.status_code)
+            statcode = response.status_code
+            do_resp = response.json()
 
-
-
-
+            print(do_resp)
+            print("Type of response data:", type(do_resp))
+            return do_resp,statcode
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+            print('Connection time out....Server is down..')
+            do_resp = "Connection timed out...SERVER IS DOWN !!..Please try again later."
+            return do_resp,statcode
 
 
 class test_rating_db(Asset_stack):
@@ -580,7 +803,9 @@ class All_safe(test_rating_db):
         pass
 
     def test_all_safe(self,saftyp,cont):
-        global  logfil,report_file
+
+        global logfil,report_file,amend_quote,quote_n,policy_n,policy_detail
+
         print('Entering AllSafe - chamber....')
 
         if saftyp == 'file':
@@ -591,11 +816,32 @@ class All_safe(test_rating_db):
             return logfil
         elif saftyp == "getreport":
             return report_file
+        elif saftyp == "amend_quote":
+            amend_quote = cont
+        elif saftyp == "get_amend_quote":
+            print("get amend quote...",amend_quote)
+            return amend_quote
+        elif saftyp == "quote_no":
+            quote_n = cont
+            print("quote number logged..",quote_n)
+        elif saftyp == "get_quote_n":
+            return quote_n
+        elif saftyp == "policy_no":
+            policy_n = cont
+        elif saftyp == "get_policy_n":
+            return policy_n
+        elif saftyp == "policy_detail":
+            policy_detail = cont
+        elif saftyp == "get_policy_detail":
+            return policy_detail
+
 
 
     def checkoutput(self,asset_resp):
 
-        asset_resp = json.loads(asset_resp)
+        asset_resp = asset_resp[0]
+
+        #asset_resp = json.loads(asset_resp)
         ikey = precount
         itemp = asset_resp['items']
 
@@ -640,12 +886,8 @@ class report_builder():
     def __init__(self, logsuit):
         global logcol, unid
 
-        logdb = MongoClient('mongodb://ds117423.mlab.com:17423',
-                      username='srekanth',
-                      password='liberty@123',
-                      authSource='liberty_sti',
-                      authMechanism='SCRAM-SHA-1')
-        logcon = logdb['liberty_sti']
+        logdb = MongoClient()
+        logcon = logdb['test_data']
         logcol = logcon['test_report']
 
         if logsuit != 'handover':
@@ -656,6 +898,8 @@ class report_builder():
                 test_suite = 'Vehicles Rating Factors - Asset API'
             elif logsuit == 'asset_allrisks':
                 test_suite = 'AllRisks Rating Factors - Asset API'
+            elif logsuit == 'quote_to_policy':
+                test_suite = 'Process Quote - Asset API'
 
             unid = uuid.uuid4()
             unid = str(unid)
@@ -708,12 +952,26 @@ class log_builder():
             print(tfilename)
             tfilename = tfilename + '.json'
 
+        elif logfile == 'quote_to_policy':
+            tfilename = 'log_process_quote_' + curr_time
+            print(tfilename)
+            tfilename = tfilename + '.json'
+
         elif logfile == 'asset_allrisks':
             tfilename = 'log_asset_allrisks_' + curr_time
             print(tfilename)
             tfilename = tfilename + '.json'
+
         elif logfile == 'asset_api':
             tfilename = 'create_quote_log_'+ curr_time
+            tfilename = tfilename + '.json'
+
+        elif logfile == 'policy_api':
+            tfilename = 'amend_policy_log_'+ curr_time
+            tfilename = tfilename + '.json'
+
+        elif logfile == 'accept_policy':
+            tfilename = 'accept_policy_log_'+ curr_time
             tfilename = tfilename + '.json'
 
         elif logfile == 'asset_api_calcpror':
@@ -827,6 +1085,58 @@ class Rating_engine():
         except FileExistsError:
             print("Directory already exist!!!")
             pass
+
+
+class Policy_api():
+    def __init__(self,spinner):
+        global col
+        if spinner == 'get_policy' or spinner == 'log_policy' or spinner == 'amend_policy':
+            db = MongoClient('mongodb://ds117423.mlab.com:17423',
+                             username='srekanth',
+                             password='liberty@123',
+                             authSource='liberty_sti',
+                             authMechanism='SCRAM-SHA-1')
+            con = db['liberty_sti']
+            col = con['policy_hub']
+            print('connected to Policy_hub now........')
+        elif spinner == "acdec_amend":
+            db = MongoClient()
+            con = db['testman']
+            col = con['accept_policy_amendment']
+            print('connected to accept_policy_amendment now........')
+
+
+    def policy_base(self):
+        self.pldata = col.find({})
+        self.policy_list = []
+        for doc in self.pldata:
+            del doc['created_quote']
+            del doc['_id']
+            self.policy_list.append(doc)
+        return self.policy_list
+
+
+    def policy_log(self, userid, policy_number, quotes):
+        time_stamp = datetime.datetime.now().isoformat()
+        self.puser = userid
+        self.policy_number = policy_number
+        self.quotes = quotes
+        status = 'active'
+        col.insert(
+            {
+                "policy_number": self.policy_number,
+                "created_by": self.puser,
+                "created_on": time_stamp,
+                "status": status,
+                "created_quote": self.quotes
+
+            })
+        print("Log operation completed.....")
+
+
+
+
+
 
 
 

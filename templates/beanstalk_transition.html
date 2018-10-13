@@ -9,10 +9,10 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style type="text/css" media="screen">
     #editor {
-        height: 600px;
+        height: 800px;
     }
     #editor2 {
-        height: 600px;
+        height: 800px;
     }
 </style>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -26,8 +26,8 @@
     <div class="row">
         <div class="col-md-6">
                 <br>
-                <div class="panel panel-info">
-                     <div class="panel-heading">View policy API call -<mark>Before Amendment</mark></div>
+                <div class="panel panel-primary">
+                     <div class="panel-heading">Policy version doc -<mark>Before Endorsement</mark></div>
                    <div class="panel-body">
                     <div id="editor">
                         {{ bview_data }}
@@ -37,9 +37,9 @@
             </div>
 <div class="col-md-6">
     <br>
-            <div class="panel panel-info">
+            <div class="panel panel-primary">
                                <div class="panel-heading">
-                                   View policy API call -<mark>After Amendment</mark></div>
+                                   Policy version doc -<mark>After Enforsement</mark></div>
                    <div class="panel-body">
                     <div id="editor2">
                         {{ aview_data }}
@@ -47,23 +47,21 @@
                     </div>
                     </div>
             </div>
-    </div>
         </div>
 </div>
-{% endblock %}
 
 
 
-<script src="/Users/isree/PycharmProjects/tag-build/api_tab/static/src_noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="{% static "src_noconflict/ace.js" %}" type="text/javascript" charset="utf-8">
+</script>
 <script>
-     var textarea = $('#content');
-
+      var textarea = $('#content');
    var editor = ace.edit("editor");
    var editor2 = ace.edit("editor2");
+
    editor.setTheme("ace/theme/eclipse");
    editor.getSession().setMode("ace/mode/json");
    document.getElementById('editor').style.fontSize='14px';
-
 
    editor2.setTheme("ace/theme/dracula");
    editor2.getSession().setMode("ace/mode/json");
@@ -74,19 +72,18 @@
    });
 
    textarea.val(editor.getSession().getValue());
-
    $("#toggletextarea-btn").on('click', function () {
        textarea.toggle();
        $(this).text(function (i, text) {
            return text === "Show Content" ? "Hide Content" : "Show Content";
        });
    });
-
    $("#alertcontent-btn").on('click', function () {
        alert(textarea.val());
    });
+
 </script>
-</body>
-</html>
+
+{% endblock %}
 
 

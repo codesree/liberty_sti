@@ -79,6 +79,14 @@
         <p class="m_allrisks"><button class="button1" style="vertical-align:middle"><span>Add Allrisks</span></button></p><br>
         <div class="container3">
         </div>
+                    <br>
+        <p class="m_buildings"><button class="button1" style="vertical-align:middle"><span>Add Buildings</span></button></p><br>
+        <div class="container4">
+        </div>
+            <br>
+        <p class="m_liabilities"><button class="button1" style="vertical-align:middle"><span>Add Personal Liabilities</span></button></p><br>
+        <div class="container5">
+        </div>
 
         </div>
 
@@ -124,8 +132,17 @@
             <button class="showallrisks btn btn-default btn-block" type="button"> Allrisks - Select </button>
     </div>
     </li>
+        <li class="list-group-item">
+        <div class="showbuildingcontainer">
+            <button class="showbuilding btn btn-default btn-block" type="button"> Building - Select </button>
+    </div>
+    </li>
+        <li class="list-group-item">
+        <div class="showpersliabcontainer">
+            <button class="showpersliab btn btn-default btn-block" type="button"> PersonalLiability - Select </button>
+    </div>
+    </li>
     </ul>
-
         <div class="form-group">
            <input type="submit" class="form-control selen_button" name="" value="Submit"></div>
         </form>
@@ -136,6 +153,43 @@
       </div>
     </div>
     </div>
+
+    <div id="dontshow" style="display: none">
+
+    <div id="carl"><div class="form-group">
+       <div class="list-group">
+                     <div class="col-sm-8">
+                     <p class=list-group-item>
+                     <select class="form-control" id="motor[]" name="motor[]">
+                     <option>Select a vehicle:</option>
+    {% for cardat in carlist %}
+    <option value={{ cardat.model }}>{{ cardat.make }} {{cardat.model}} {{ cardat.year }}</option>
+    {% endfor %}
+           </select></p></div>
+    </div><br><a href="#" class="delete"><button type="button" class="btn btn-danger btn-xs">remove</button></a>
+    </div>
+
+
+    </div>
+
+        <div id="dontshow" style="display: none">
+
+    <div id="carml"><div class="form-group">
+       <div class="list-group">
+                     <div class="col-sm-8">
+                     <p class=list-group-item>
+                     <select class="form-control" id="motor[]" name="motor[]">
+                     <option>Select a vehicle:</option>
+    {% for cardat in carlist %}
+    <option value="{{ cardat.model }}">{{ cardat.make }} {{cardat.model}} {{ cardat.year }}</option>
+    {% endfor %}
+           </select></p></div>
+    </div><br><a href="#" class="delete"><button type="button" class="btn btn-danger btn-xs">remove</button></a>
+    </div>
+
+
+    </div>
+
 
 
 

@@ -16,42 +16,69 @@
         var wrapper1         = $(".container1");
         var wrapper2         = $(".container2");
         var wrapper3         = $(".container3");
+        var wrapper4         = $(".container4");
+        var wrapper5         = $(".container5");
+
+
 
         var show_wrapper1    = $(".showmotorcontainer");
         var show_wrapper2    = $(".showcontentcontainer");
-        var show_wrapper3    = $(".showAllriskscontainer")
+        var show_wrapper3    = $(".showAllriskscontainer");
+        var show_wrapper4    = $(".showbuildingcontainer");
+        var show_wrapper5    = $(".showpersliabcontainer")
+
+
 
 
         var add_vehicle      = $(".m_vehicles");
         var add_homecontents = $(".m_contents");
         var add_allrisks     = $(".m_allrisks");
+        var add_buildings    = $(".m_buildings");
+        var add_liabilities  = $(".m_liabilities");
+
+
 
         var show_motor       = $(".showmotor");
         var show_content     = $(".showcontent");
-        var show_allrisks    = $(".showallrisks")
+        var show_allrisks    = $(".showallrisks");
+        var show_building    = $(".showbuilding");
+        var show_persliab    = $(".showpersliab")
+
+
 
         var add_content      = $(".add_content_field");
+
+        var show_cars = $("#carl");
+        var show_mcars = $("#carml");
 
         var w1 = 1;
         var w2 = 1;
         var w3 = 1;
+        var w4 = 1;
+        var w5 = 1;
+
+
+
+
         $(show_motor).click(function(e){
              e.preventDefault();
              if(w1 <= show_max_fields) {
                  w1++;
+                 //$(show_wrapper1).append(show_cars)
                  $(show_wrapper1).append('<div class="row"><div class="form-group">\n\n' +
                      '<div class="list-group">\n' +
                      '<div class="col-sm-8">\n'+
                      '<p class=list-group-item>\n' +
                      '  <select class="form-control" id="motor[]" name="motor[]">\n' +
                      '  <option>Select a vehicle:</option>\n' +
-                     '    <option value="BANTAM 1.3i P/U S/C">FORD BANTAM 1.3i P/U S/C</option>\n' +
+
+                     '   <option value="BANTAM 1.3i P/U S/C">FORD BANTAM 1.3i P/U S/C</option>\n' +
                      '    <option value="KUGA 1.5 ECOBOOST AMBIENTE">FORD KUGA 1.5 ECOBOOST AMBIENTE</option>\n' +
                      '    <option value="MUSTANG 2.3 ECOBOOST">FORD MUSTANG 2.3 ECOBOOST</option>\n' +
                      '    <option value="GRAND i10 1.25 FLUID">HYUNDAI GRAND i10 1.25 FLUID</option>\n' +
                      '  </select></p></div>\n' +
                      '</div>' +
-                     '<br><a href="#" class="delete"><button type="button" class="btn btn-danger btn-xs">remove</button></a></div></div>'); //add input box
+                     '<br><a href="#" class="delete"><button type="button" class="btn btn-danger btn-xs">remove</button></a></div></div>');//add input box
              }
         else
             {
@@ -92,23 +119,59 @@
           alert('Note this is a Single Entity selection. You cannot have more than one product')             }
         });
 
+        $(show_building).click(function(e){
+            e.preventDefault();
+            if(w4 <= show_max_fields){
+                w4++;
+                $(show_wrapper4).append('<div class="row"><div class="form-group">\n' +
+                     '<div class="list-group">\n' +
+                     '<div class="col-sm-8">\n'+
+                     '<p class=list-group-item>\n' +
+                    '<input type="text" class="form-control" id="building[]" placeholder="Please enter the name of Building" name="building[]"></p></div>\n' +
+                    '<br><a href="#" class="delete"><button type="button" class="btn btn-danger btn-xs">remove</button></a></div></div>'); //add input box
+            }
+            else
+            {
+          alert('Note this is a Single Entity selection. You cannot have more than one product')             }
+        });
+
+        $(show_persliab).click(function(e){
+            e.preventDefault();
+            if(w5 <= show_max_fields){
+                w5++;
+                $(show_wrapper5).append('<div class="row"><div class="form-group">\n' +
+                     '<div class="list-group">\n' +
+                     '<div class="col-sm-8">\n'+
+                     '<p class=list-group-item>\n' +
+                    '<input type="text" class="form-control" id="persliab[]" placeholder="Please enter a value to identify your personal liability " name="persliab[]"></p></div>\n' +
+                    '<br><a href="#" class="delete"><button type="button" class="btn btn-danger btn-xs">remove</button></a></div></div>'); //add input box
+            }
+            else
+            {
+          alert('Note this is a Single Entity selection. You cannot have more than one product')             }
+        });
+
 
         var x1 = 1;
         var x2 = 1;
         var x3 = 1;
+        var x4 = 1;
+        var x5 = 1;
+
 
 
         $(add_vehicle).click(function(e){
             e.preventDefault();
             if(x1 < max_fields){
                 x1++;
-                $(wrapper1).append('<div class="row"><div class="form-group">\n\n' +
+$(wrapper1).append('<div class="row"><div class="form-group">\n\n' +
                      '<div class="list-group">\n' +
                      '<div class="col-sm-8">\n'+
                      '<p class=list-group-item>\n' +
                      '  <select class="form-control" id="motor[]" name="motor[]">\n' +
                      '  <option>Select a vehicle:</option>\n' +
-                          '    <option value="BANTAM 1.3i P/U S/C">FORD BANTAM 1.3i P/U S/C</option>\n' +
+
+                     '   <option value="BANTAM 1.3i P/U S/C">FORD BANTAM 1.3i P/U S/C</option>\n' +
                      '    <option value="KUGA 1.5 ECOBOOST AMBIENTE">FORD KUGA 1.5 ECOBOOST AMBIENTE</option>\n' +
                      '    <option value="MUSTANG 2.3 ECOBOOST">FORD MUSTANG 2.3 ECOBOOST</option>\n' +
                      '    <option value="GRAND i10 1.25 FLUID">HYUNDAI GRAND i10 1.25 FLUID</option>\n' +
@@ -137,8 +200,7 @@
             alert('You Reached the limits')
              }
         });
-
-       $(add_allrisks).click(function(e){
+        $(add_allrisks).click(function(e){
             e.preventDefault();
             if(x3 < max_fields){
                 x3++;
@@ -154,6 +216,40 @@
             alert('You Reached the limits')
              }
         });
+        $(add_buildings).click(function(e){
+            e.preventDefault();
+            if(x4 < max_fields){
+                x4++;
+                $(wrapper4).append('<div class="row"><div class="form-group">\n' +
+                     '<div class="list-group">\n' +
+                     '<div class="col-sm-8">\n'+
+                     '<p class=list-group-item>\n' +
+                    '<input type="text" class="form-control" id="building[]" placeholder="Please enter the name of building" name="building[]"></p></div>\n' +
+                    '<br><a href="#" class="delete"><button type="button" class="btn btn-danger btn-xs">remove</button></a></div></div>'); //add input box
+            }
+            else
+            {
+            alert('You Reached the limits')
+             }
+        });
+        $(add_liabilities).click(function(e){
+            e.preventDefault();
+            if(x5 < max_fields){
+                x5++;
+                $(wrapper5).append('<div class="row"><div class="form-group">\n' +
+                     '<div class="list-group">\n' +
+                     '<div class="col-sm-8">\n'+
+                     '<p class=list-group-item>\n' +
+                    '<input type="text" class="form-control" id="persliab[]" placeholder="Please enter a value to identify your personal liability" name="persliab[]"></p></div>\n' +
+                    '<br><a href="#" class="delete"><button type="button" class="btn btn-danger btn-xs">remove</button></a></div></div>'); //add input box
+            }
+            else
+            {
+            alert('You Reached the limits')
+             }
+        });
+
+
 
         $(wrapper1).on("click",".delete", function(e){
             e.preventDefault(); $(this).parent('div').remove(); x1--;
@@ -164,6 +260,12 @@
         $(wrapper3).on("click",".delete", function(e){
             e.preventDefault(); $(this).parent('div').remove(); x3--;
         })
+               $(wrapper4).on("click",".delete", function(e){
+            e.preventDefault(); $(this).parent('div').remove(); x4--;
+        })
+               $(wrapper5).on("click",".delete", function(e){
+            e.preventDefault(); $(this).parent('div').remove(); x5--;
+        })
         $(show_wrapper1).on("click",".delete", function(e){
             e.preventDefault(); $(this).parent('div').remove(); w1--;
         })
@@ -172,6 +274,12 @@
         })
         $(show_wrapper3).on("click",".delete", function(e){
             e.preventDefault(); $(this).parent('div').remove(); w3--;
+        })
+               $(show_wrapper4).on("click",".delete", function(e){
+            e.preventDefault(); $(this).parent('div').remove(); w4--;
+        })
+               $(show_wrapper5).on("click",".delete", function(e){
+            e.preventDefault(); $(this).parent('div').remove(); w5--;
         })
     });
 
@@ -459,8 +567,11 @@ function showPage() {
       <li><a href="{% url 'tag_home' %}">Dashboard
       </a></li>
       <li><a href="{% url 'beanstalk_home' %}">Beanstalk API</a></li>
-      <li><a href="{% url 'test_chamber_home' %}">Test chamber</a></li>
-      <li><a href="{% url 'inspector_tag' %}">Inspector</a></li>
+     <!-- <li><a href="{% url 'test_chamber_home' %}">Test chamber</a></li>
+           <li><a href="{% url 'inspector_tag' %}">Inspector</a></li>-->
+
+     <li><a href="#">Test chamber</a></li>
+      <li><a href="#">Inspector</a></li>
             <li><a href="{% url 'tag_user_logout' %}">Logout</a> </li>
 
     </ul>

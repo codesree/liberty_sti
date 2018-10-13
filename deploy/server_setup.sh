@@ -38,6 +38,6 @@ supervisorctl restart api_tag
 cp $PROJECT_BASE_PATH/liberty_sti/deploy/nginx_api_tag.conf /etc/nginx/sites-available/api_tag.conf
 rm /etc/nginx/sites-enabled/default
 ln -s /etc/nginx/sites-available/api_tag.conf /etc/nginx/sites-enabled/api_tag.conf
-systemctl restart nginx.service
+    systemctl restart nginx.service
 
 echo "DONE! :)"

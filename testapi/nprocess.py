@@ -8,17 +8,13 @@ import datetime
 class Policy_starter():
     def __init__(self,spinner):
         global col
-        # db = MongoClient()
-        db = MongoClient('mongodb://ds117423.mlab.com:17423',
-                      username='srekanth',
-                      password='liberty@123',
-                      authSource='liberty_sti',
-                      authMechanism='SCRAM-SHA-1')
         if spinner == 'get_policy' or spinner == 'log_policy' or spinner == 'amend_policy':
-            con = db['liberty_sti']
+            db = MongoClient()
+            con = db['testman']
             col = con['policy_hub']
             print('connected to Policy_hub now........')
         elif spinner == "acdec_amend":
+            db = MongoClient()
             con = db['testman']
             col = con['accept_policy_amendment']
             print('connected to accept_policy_amendment now........')

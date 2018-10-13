@@ -4,7 +4,7 @@
 {% load static %}
 {% block body_block %}
     <div class="container">
-        <h3><span class="label label-default active">Asset API - Test Suite</span></h3>
+        <h3><span class="label label-default active">Asset API -Rating Factors- Test Suite</span></h3>
         <br>
     <div class="row">
     <div class="col-sm-8">
@@ -17,7 +17,7 @@
                 <div class="row">
       <div class="col-sm-8"><h5>TEST CASES - HOME CONTENTS:</h5></div>
       <div class="col-sm-4">
-         <p class="hcretestexe"><button class="btn btn-info active">Re-run</button></p>
+         <p class="hcretestexe"><button class="btn btn-primary active"><span class="glyphicon glyphicon-play"></span>Re-Run</button></p>
                     <div class="hcload">
     </div>
 
@@ -28,7 +28,7 @@
                {% if tstat == 'hcdone' %}
               {% if testrep and logfile %}
   <blockquote>
-    <p><kbd>Execution Completed successfully......</kbd></p>
+    <p><kbd>Execution Completed succ  <be>       </be>ssfully......</kbd></p>
       <br>
     <footer>  <div class="col-xs-4"><a href="{% url 'download_log' %}"><button type="button" class="btn btn-danger active">Download test log</button></a></div>
                       <div class="col-xs-3"><a href="{% url 'test_report' %}"><button type="button" class="btn btn-info active">View test report</button></a></div>
@@ -52,7 +52,7 @@
                 <div class="row">
       <div class="col-sm-6"><h5>TEST CASES - HOME CONTENTS:</h5></div>
       <div class="col-sm-6">
-                 <p class="hctestexe"><button class="btn btn-info active">Run</button></p>
+                 <p class="hctestexe"><button class="btn btn-primary"><span class="glyphicon glyphicon-play"></span> Run</button></p>
           <div class="hcload">
     </div>
       </div>
@@ -76,9 +76,16 @@
                       <li class="list-group-item">test with rating factor "WallType"</li>
                       <li class="list-group-item">test with rating factor "HomeArea"</li>
                       <li class="list-group-item">test with rating factor "HomeType"</li>
-                      <li class="list-group-item">test with rating factor "ppolFrequency"</li>
+                      <li class="list-group-item">test with rating factor "policyFrequency"</li>
                       <li class="list-group-item">test with rating factor "itemStatus"</li>
-                      <li class="list-group-item">test with rating factor "BuildingUsage"</li>
+                      <li class="list-group-item">test with rating factor "IsCommune"</li>
+                      <li class="list-group-item">test with rating factor "RentedBuilding"</li>
+                      <li class="list-group-item">test with rating factor "HasElectricGates"</li>
+                      <li class="list-group-item">test with rating factor "HasAccessControl"</li>
+                      <li class="list-group-item">test with rating factor "Legal"</li>
+                      <li class="list-group-item">test with rating factor "Dwell100Water"</li>
+                      <li class="list-group-item">test with rating factor "ContentsFullyFurnished"</li>
+
         </ul>
       </div>
     </div>
@@ -93,7 +100,7 @@
                 <div class="row">
       <div class="col-sm-6"><h5>TEST CASES - MOTOR VEHICLES:</h5></div>
       <div class="col-sm-6">
-         <p class="mvretestexe"><button class="btn btn-info active">RE-Run</button></p>
+         <p class="mvretestexe"><button class="btn btn-primary"><span class="glyphicon glyphicon-play"></span> Run</button></p>
                     <div class="mvload">
     </div>
 
@@ -106,7 +113,7 @@
   <blockquote>
     <p><kbd>Execution Completed successfully......</kbd></p>
       <br>
-    <footer>  <div class="col-xs-4"><a href="{% url 'download_log' %}"><button type="button" class="btn btn-danger active">Download test log</button></a></div>
+    <footer>  <div class="col-xs-4"><a href="{% url 'download_log' %}"><button type="button" class="btn btn-default active">Download test log</button></a></div>
                       <div class="col-xs-3"><a href="{% url 'test_report' %}"><button type="button" class="btn btn-info active">View test report</button></a></div>
 </footer>
   </blockquote>
@@ -128,7 +135,7 @@
                 <div class="row">
       <div class="col-sm-6"><h5>TEST CASES - MOTOR VEHICLES:</h5></div>
       <div class="col-sm-6">
-                 <p class="mvtestexe"><button class="btn btn-info active">Run</button></p>
+                 <p class="mvtestexe"><button class="btn btn-primary"><span class="glyphicon glyphicon-play"></span> Run</button></p>
           <div class="mvload">
     </div>
       </div>
@@ -154,6 +161,10 @@
                       <li class="list-group-item">test with rating factor "CarHireOption"</li>
                       <li class="list-group-item">test with rating factor "NewVehicle"</li>
                       <li class="list-group-item">test with rating factor "ParkedOvernight"</li>
+                      <li class="list-group-item">test with rating factor "CommodityCarrying"</li>
+                      <li class="list-group-item">test with rating factor "CrossBorder"</li>
+                      <li class="list-group-item">test with rating factor "BusinessNature"</li>
+
         </ul>
       </div>
     </div>
@@ -161,14 +172,86 @@
     </div>
     </div>
 
-<!-------------TEST EXECUTION CONTAINER FOR PERSONAL LIABILITY ---------------------->
+<!-------------TEST EXECUTION CONTAINER FOR ALLRISKS ---------------------->
+
+          <div class="panel panel-primary">
+    <div class="panel-body">
+        {% if tstat == 'ardone' %}
+                <div class="row">
+      <div class="col-sm-6"><h5>TEST CASES - ALL_RISKS:</h5></div>
+      <div class="col-sm-6">
+         <p class="arretestexe"><button class="btn btn-primary"><span class="glyphicon glyphicon-play"></span>Re-Run</button></p>
+                    <div class="arload">
+    </div>
+
+      </div>
+    </div>
+    <div class="row">
+        <div class="exestat">
+               {% if tstat == 'ardone' %}
+              {% if testrep and logfile %}
+  <blockquote>
+    <p><kbd>Execution Completed successfully......</kbd></p>
+      <br>
+    <footer>  <div class="col-xs-4"><a href="{% url 'download_log' %}"><button type="button" class="btn btn-danger active">Download log</button></a></div>
+                      <div class="col-xs-3"><a href="{% url 'test_report' %}"><button type="button" class="btn btn-info active">View test report</button></a></div>
+</footer>
+  </blockquote>
+              {% else %}
+                    <blockquote>
+    <p><code>Execution Failed.............please see below info</code></p>
+                        <br>
+    <footer>Problem might have been with test report/test log generation. Please contact admin for more clarity ..</p>
+
+</footer>
+  </blockquote>
+              {% endif %}
+          {% endif %}
+
+
+        </div>
+    </div>
+            {% else %}
+                <div class="row">
+      <div class="col-sm-6"><h5>TEST CASES - ALL_RISKS:</h5></div>
+      <div class="col-sm-6">
+                 <p class="artestexe"><button class="btn btn-primary"><span class="glyphicon glyphicon-play"></span> Run</button></p>
+          <div class="arload">
+    </div>
+      </div>
+    </div>
+                {% endif %}
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <p class="panel-title">
+          <a data-toggle="collapse" href="#collapse4">Test criteria's defined for AllRisks</a>
+        </p>
+      </div>
+      <div id="collapse4" class="panel-collapse collapse">
+        <ul class="list-group">
+                      <li class="list-group-item">test with rating factor "subsection"</li>
+                      <li class="list-group-item">test with rating factor "ppolFrequency"</li>
+                      <li class="list-group-item">test with rating factor "discountType"</li>
+                      <li class="list-group-item">test with rating factor "discountLoading"</li>
+                      <li class="list-group-item">test with rating factor "itemStatus"</li>
+                      <li class="list-group-item">test with rating factor "storageLocation"</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+
+
+    </div>
+
+
+    <!-------------TEST EXECUTION CONTAINER FOR PERSONAL LIABILITY ---------------------->
           <div class="panel panel-primary">
     <div class="panel-body">
         {% if tstat == 'pldone' %}
                 <div class="row">
       <div class="col-sm-6"><h5>TEST CASES - PERSONAL LIABILITY:</h5></div>
       <div class="col-sm-6">
-         <p class="plretestexe"><button class="btn btn-info active">Re-Run</button></p>
+         <p class="plretestexe"><button class="btn btn-primary"><span class="glyphicon glyphicon-play"></span> Run</button></p>
                     <div class="plload">
     </div>
 
@@ -203,7 +286,7 @@
                 <div class="row">
       <div class="col-sm-6"><h5>TEST CASES - PERSONAL LIABILITY:</h5></div>
       <div class="col-sm-6">
-                 <p class="pltestexe"><button class="btn btn-info active">Run</button></p>
+                 <p class="pltestexe"><button class="btn btn-primary"><span class="glyphicon glyphicon-play"></span> Run</button></p>
           <div class="plload">
     </div>
       </div>
@@ -211,77 +294,6 @@
                 {% endif %}
 
     </div>
-    </div>
-
-<!-------------TEST EXECUTION CONTAINER FOR ALLRISKS ---------------------->
-
-          <div class="panel panel-primary">
-    <div class="panel-body">
-        {% if tstat == 'ardone' %}
-                <div class="row">
-      <div class="col-sm-6"><h5>TEST CASES - ALL_RISKS:</h5></div>
-      <div class="col-sm-6">
-         <p class="arretestexe"><button class="btn btn-info active">Re-run</button></p>
-                    <div class="arload">
-    </div>
-
-      </div>
-    </div>
-    <div class="row">
-        <div class="exestat">
-               {% if tstat == 'ardone' %}
-              {% if testrep and logfile %}
-  <blockquote>
-    <p><kbd>Execution Completed successfully......</kbd></p>
-      <br>
-    <footer>  <div class="col-xs-4"><a href="{% url 'download_log' %}"><button type="button" class="btn btn-danger active">Download test log</button></a></div>
-                      <div class="col-xs-3"><a href="{% url 'test_report' %}"><button type="button" class="btn btn-info active">View test report</button></a></div>
-</footer>
-  </blockquote>
-              {% else %}
-                    <blockquote>
-    <p><code>Execution Failed.............please see below info</code></p>
-                        <br>
-    <footer>Problem might have been with test report/test log generation. Please contact admin for more clarity ..</p>
-
-</footer>
-  </blockquote>
-              {% endif %}
-          {% endif %}
-
-
-        </div>
-    </div>
-            {% else %}
-                <div class="row">
-      <div class="col-sm-6"><h5>TEST CASES - ALL_RISKS:</h5></div>
-      <div class="col-sm-6">
-                 <p class="artestexe"><button class="btn btn-info active">Run</button></p>
-          <div class="arload">
-    </div>
-      </div>
-    </div>
-                {% endif %}
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <p class="panel-title">
-          <a data-toggle="collapse" href="#collapse4">Test criteria's defined for AllRisks</a>
-        </p>
-      </div>
-      <div id="collapse4" class="panel-collapse collapse">
-        <ul class="list-group">
-                      <li class="list-group-item">test with rating factor "subsection"</li>
-                      <li class="list-group-item">test with rating factor "ppolFrequency"</li>
-                      <li class="list-group-item">test with rating factor "discountType"</li>
-                      <li class="list-group-item">test with rating factor "discountLoading"</li>
-                      <li class="list-group-item">test with rating factor "itemStatus"</li>
-                      <li class="list-group-item">test with rating factor "storageLocation"</li>
-        </ul>
-      </div>
-    </div>
-    </div>
-
-
     </div>
 
 
@@ -335,11 +347,16 @@ $(document).ready(function() {
         $(hcteststart).click(function(e){
                 $(hcteststart).hide();
                         e.preventDefault();
-                          $(hclwrap).append('<div class="col-sm-8">\n' +
-                              '<div class="progress"><div class="progress-bar progress-bar-striped active"' +
-                              ' role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">Execution in progress.........' +
-                              '</div>' +
-                              '</div></div>');
+                          $(hclwrap).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+
+
+                    '</div>');
                                   document.location.href="{% url "asset_homecontent_suite" %}"
 
         });
@@ -348,9 +365,16 @@ $(document).ready(function() {
                 $(hcretest).hide();
                 $(exestat).hide();
                         e.preventDefault();
-                          $(hclwrap).append('<div class="col-sm-8"><div class="progress"><div class="progress-bar progress-bar-striped active"' +
-                              ' role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">Execution in progress...' +
-                              '</div></div></div>');
+                          $(hclwrap).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+
+
+                    '</div>');
                                   document.location.href="{% url "asset_homecontent_suite" %}"
 
         });
@@ -358,11 +382,16 @@ $(document).ready(function() {
         $(plteststart).click(function(e){
             $(plteststart).hide();
                         e.preventDefault();
-                          $(pllwrap).append('<div class="col-sm-8">\n' +
-                              '<div class="progress"><div class="progress-bar progress-bar-striped active"' +
-                              ' role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">Execution in progress.........' +
-                              '</div>' +
-                              '</div></div>');
+                          $(pllwrap).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+
+
+                    '</div>');
                                   document.location.href="{% url "asset_personal_liability" %}"
 
         });
@@ -371,9 +400,16 @@ $(document).ready(function() {
                 $(plretest).hide();
                 $(exestat).hide();
                         e.preventDefault();
-                          $(pllwrap).append('<div class="col-sm-8"><div class="progress"><div class="progress-bar progress-bar-striped active"' +
-                              ' role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">Execution in progress...' +
-                              '</div></div></div>');
+                          $(pllwrap).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+
+
+                    '</div>');
                                   document.location.href="{% url "asset_personal_liability" %}"
 
         });
@@ -383,11 +419,16 @@ $(document).ready(function() {
         $(arteststart).click(function(e){
                 $(arteststart).hide();
                         e.preventDefault();
-                          $(arlwrap).append('<div class="col-sm-8">\n' +
-                              '<div class="progress"><div class="progress-bar progress-bar-striped active"' +
-                              ' role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">Execution in progress.........' +
-                              '</div>' +
-                              '</div></div>');
+                          $(arlwrap).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+
+
+                    '</div>');
                                   document.location.href="{% url "asset_allrisk_suite" %}"
 
         });
@@ -396,9 +437,16 @@ $(document).ready(function() {
                 $(arretest).hide();
                 $(exestat).hide();
                         e.preventDefault();
-                          $(arlwrap).append('<div class="col-sm-8"><div class="progress"><div class="progress-bar progress-bar-striped active"' +
-                              ' role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">Execution in progress...' +
-                              '</div></div></div>');
+                          $(arlwrap).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+
+
+                    '</div>');
                                   document.location.href="{% url "asset_allrisk_suite" %}"
 
         });
@@ -406,11 +454,16 @@ $(document).ready(function() {
         $(mvteststart).click(function(e){
                 $(mvteststart).hide();
                         e.preventDefault();
-                          $(mvlwrap).append('<div class="col-sm-8">\n' +
-                              '<div class="progress"><div class="progress-bar progress-bar-striped active"' +
-                              ' role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">Execution in progress.........' +
-                              '</div>' +
-                              '</div></div>');
+                          $(mvlwrap).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+
+
+                    '</div>');
                                   document.location.href="{% url "asset_vehicle_suite" %}"
 
         });
@@ -419,9 +472,16 @@ $(document).ready(function() {
                 $(mvretest).hide();
                 $(exestat).hide();
                         e.preventDefault();
-                          $(mvlwrap).append('<div class="col-sm-8"><div class="progress"><div class="progress-bar progress-bar-striped active"' +
-                              ' role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">Execution in progress...' +
-                              '</div></div></div>');
+                          $(mvlwrap).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+
+
+                    '</div>');
                                   document.location.href="{% url "asset_vehicle_suite" %}"
 
         });

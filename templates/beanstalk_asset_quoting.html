@@ -47,6 +47,8 @@ $(document).ready(function() {
                         <div class="panel-heading">
                        API Request - <kbd>CREATE QUOTE</kbd>
                         </div>
+                    {% elif pantit == "amdq" %}
+                    <div class="panel-heading">API Request - <kbd>AMEND QUOTE</kbd></div>
                     {% elif pantit == "acq" %}
                     <div class="panel-heading">API Request - <kbd>ACCEPT QUOTE</kbd></div>
                     {% elif pantit == "ctp" %}
@@ -63,7 +65,7 @@ $(document).ready(function() {
                            </div>
                     <h4>Quote number - <code>{{ dispq }}</code> -<span class="glyphicon glyphicon-floppy-open"></span></h4>
                   <div class="exequote">
-                    <input type= "submit" class="btn btn-primary btn-sm btn-block" data-toggle="tooltip" data-placement="left" title="Post request" name="ctpost" id="ctpost"
+                    <input type= "submit" class="btn btn-default active btn-sm btn-block" data-toggle="tooltip" data-placement="left" title="Post request" name="ctpost" id="ctpost"
                            value="CONVERT TO POLICY" >
                   </div>
                                   <div class="loadman"></div>
@@ -78,14 +80,17 @@ $(document).ready(function() {
                         <strong>Success!</strong> Your policy is now confirmed
                       </div>
                     </div><br>
-                        <div class="col-sm-8">
-                    <a href="{% url 'beanstalk_asset_home' %}"><button class="btn btn-primary btn-sm btn-block">Return to Asset Menu</button></a>
-                    </div>
+                        <div class="col-sm-6">
+                    <a href="{% url 'beanstalk_asset_home' %}"><button class="btn btn-default active btn-sm btn-block">Return to Asset Menu</button></a>
                     </div>
 
+                                            <div class="col-sm-4">
+                    <a href="{% url 'beanstalk_exe2' %}"><button class="btn btn-info active">Go-to Policy Endorsement</button></a>
+                                            </div>
+                    </div>
                 {% else %}
-                   <div class="panel-body">
-                                        <div id="editor">{{Req_data}}
+                    <div class="panel-body">
+                                        <div id="editor">{{ Req_data }}
                     </div>
                                <form id="runner" method = 'POST' action="{% url "asset_execution" %}">
            {% csrf_token %}
@@ -93,15 +98,21 @@ $(document).ready(function() {
                     <textarea name="content" id="content" hidden="hidden" value="content"></textarea>
            </div>
            <!-- checkpoint execute/proceed - accept/convert to policy -->
-           {% if pantit == 'crq'%}
+           {% if pantit == 'crq' or pantit == 'amdq' %}
          <div class="exequote">
-          <input type= "submit" class="btn btn-default active active btn-sm btn-block" data-toggle="tooltip" data-placement="left" title="Post request" name="crpost" id="crpost"
+          <input type= "submit" class="btn btn-default active btn-sm btn-block" data-toggle="tooltip" data-placement="left" title="Post request" name="crpost" id="crpost"
              value="PROCEED WITH CREATE QUOTE"><div class="loadman"></div>
          </div>
            {% elif pantit == 'acq' %}
           <div class="exequote">
-          <input type= "submit" class="btn btn-primary btn-sm btn-block" data-toggle="tooltip" data-placement="left" title="Post request" name="acpost" id="acpost"
-             value="PROCEED WITH ACCEPT QUOTE">
+          <div class="col-sm-5">
+          <input type= "submit" class="btn btn-default active btn-sm btn-block" data-toggle="tooltip" data-placement="left" title="Post request" name="acpost" id="acpost"
+             value="PROCEED WITH ACCEPT QUOTE"></div>
+           {% if result == 'Success' %}
+          <div class="col-sm-5">
+                    <input type= "submit" class="btn btn-default active btn-sm btn-block" data-toggle="tooltip" data-placement="left" title="Post request" name="amqpost" id="amqpost"
+             value="WOULD YOU LIKE TO AMEND QUOTE?"></div>
+               {% endif %}
           </div><div class="loadman"></div>
 
            {% else %}
@@ -127,24 +138,26 @@ $(document).ready(function() {
                                  <li class="list-group-item list-group-item-info">Quote number <kbd>{{dispq}}</kbd></li>
                                         {% if pantit == 'crq' or pantit == 'acq' %}
                                  <li class="list-group-item list-group-item-info"><mark>Congratulations..We have created the Insurance Quote for your assets !!!</mark></li>
-                                            <li class="list-group-item list-group-item-info">API request/response log: <a href="{% url 'download_assetrr' %}"> <button type="button" class="btn btn-default active btn-sm"> Download </button> </a></li>
+                                            <li class="list-group-item list-group-item-info">API request/response log: <a href="{% url 'download_assetrr' %}"> <button type="button" class="btn btn-danger btn-sm"> Download </button> </a></li>
                                         {% elif pantit == 'ctp' %}
                                  <li class="list-group-item list-group-item-info"><mark>Congratulations..your Insurance Quote has been accepted by our API gateway</mark></li>
-                                            <li class="list-group-item list-group-item-info">API request/response log: <a href="{% url 'download_assetrr' %}"> <button type="button" class="btn btn-default active btn-sm"> Download </button> </a></li>
+                                            <li class="list-group-item list-group-item-info">API request/response log: <a href="{% url 'download_assetrr' %}"> <button type="button" class="btn btn-danger btn-sm"> Download </button> </a></li>
                                         {% else %}
                                         {% endif %}
                                      {% elif dispp %}
                                  <li class="list-group-item list-group-item-info">Policy number <kbd>{{dispp}}</kbd></li>
                                  <li class="list-group-item list-group-item-info"><mark>Congratulations..your Policy is now confirmed</mark></li>
-                                <li class="list-group-item list-group-item-info">API request/response log: <a href="{% url 'download_assetrr' %}"> <button type="button" class="btn btn-default active btn-sm"> Download </button> </a></li>
+                                 <li class="list-group-item list-group-item-info">API request/response log: <a href="{% url 'download_assetrr' %}"> <button type="button" class="btn btn-danger btn-sm"> Download </button> </a></li>
 
                                      {% else %}
                                      {% endif %}
-                                     {% if stat == 'success' %}
+                                     {% if result == 'Success' %}
                                  <li class="list-group-item list-group-item-info">Status: <p class="text-success">Success</p></li>
-                                     {% elif stat == 'fail' %}
-                                 <li class="list-group-item list-group-item-danger">Status: <code>Failed</code></li>
-                                 <li class="list-group-item list-group-item-info">API request/response log: <a href="{% url 'download_assetrr' %}"> <button type="buton"  class="btn btn-primary btn-sm"> Download </button> </a></li>
+                                 <li class="list-group-item list-group-item-info">Http Status Code: <kbd>{{ stat }}</kbd></li>
+                                     {% elif result == 'Fail' %}
+                                 <li class="list-group-item list-group-item-info">Status: <p class="text-success">Error</p></li>
+                                 <li class="list-group-item list-group-item-info">Http Status Code: <kbd>{{ stat }}</kbd></li>
+                                 <li class="list-group-item list-group-item-info">API request/response log: <a href="{% url 'download_assetrr' %}"> <button type="button"  class="btn btn-default active btn-sm"> Download </button> </a></li>
                                  {% else %}
                                  {% endif %}
             </ul>
@@ -205,15 +218,9 @@ $(document).ready(function() {
     var loadman = $('.loadman')
 
     $("#crpost").click(function() {
-// To Display progress bar
-//$("#loading").show();
         $(quotexe).hide();
-        /*$(traceld).append('<div class="col-sm-8">\n' +
-            '<div class="progress"><div class="progress-bar progress-bar-striped active"' +
-            ' role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">Execution in progress.........' +
-            '</div>' +
-            '</div></div>');*/
-                $(loadman).append('<div class="loading"><h5>Executing</h5>\n' +
+
+                $(loadman).append('<div class="loading"><h5>Executing...</h5>\n' +
                     '  <div class="loading-bar"></div>\n' +
                     '  <div class="loading-bar"></div>\n' +
                     '  <div class="loading-bar"></div>\n' +
@@ -230,6 +237,43 @@ $.post("{% url 'inspector_tag' %}", {
 traceqn:traceqn
 });
 });
+
+        $("#acpost").click(function() {
+        $(quotexe).hide();
+
+                $(loadman).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+
+
+                    '</div>');})
+       $("#ctpost").click(function() {
+        $(quotexe).hide();
+
+                $(loadman).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                    '</div>');})
+
+        $("#amqpost").click(function() {
+        $(quotexe).hide();
+
+                $(loadman).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                    '</div>');})
 
         /*$('#traceform').submit(function(){
             $(inpectb).hide();

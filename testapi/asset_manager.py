@@ -8,7 +8,6 @@ class asset_manager():
     def __init__(self):
 
         global con
-        # db= MongoClient()
         db = MongoClient('mongodb://ds117423.mlab.com:17423',
                       username='srekanth',
                       password='liberty@123',
@@ -41,8 +40,16 @@ class asset_manager():
             return accept_q
 
 
+    def process_carlist(self):
+
+        col = con['rate_vehicles']
+
+        vehid = col.find_one({"title": "rate_vehicles"})
+
+        carsd = vehid['ratingfactors']['CARS']
 
 
+        return carsd
 
     def get_vehicles(self,doman,vdata):
 
@@ -84,6 +91,7 @@ class asset_manager():
 
 
     def asset_composer(self,asset_dict):
+
 
         asset_secl = []
 
@@ -127,6 +135,37 @@ class asset_manager():
         except:
             print('no update scheduled for All risks')
 
+
+        # Build Buildings
+        print(asset_dict['building_list'])
+
+        try:
+            assert len(asset_dict['building_list']) != 0
+            print("building update processing ....")
+            builddl = asset_dict['building_list']
+            buldlen = len(allrkdl)
+            asset_b = self.build_asset('building',builddl,buldlen)
+
+            asset_secl.append(asset_b)
+
+        except:
+            print('no update scheduled for Buildings')
+
+        # Build Personal liabilities
+        print(asset_dict['persliab_list'])
+
+        try:
+            assert len(asset_dict['persliab_list']) != 0
+            print("building update processing ....")
+            persldl = asset_dict['persliab_list']
+            perllen = len(allrkdl)
+            asset_p = self.build_asset('persliab',persldl,perllen)
+
+            asset_secl.append(asset_p)
+
+        except:
+            print('no update scheduled for Buildings')
+
         # Build Sections - DESTINY
 
         try:
@@ -143,7 +182,7 @@ class asset_manager():
 
         try:
             assert collect == 'motor_vehicle'
-            col = con['vehicle_item']
+            col = con['vehicle_item_draft']
             chkc = 0
             while chkc < updcount:
                 for md in iteml:
@@ -169,7 +208,7 @@ class asset_manager():
                                {'$set':{
                                    'itemKey':''+md['model']+''
                                }})
-                    self.asset_stack('vehicle_item', 'vehicle_asset', 'Vehicles', 'Vehicle', chkc)
+                    self.asset_stack('vehicle_item_draft', 'vehicle_asset', 'Vehicles', 'Vehicle', chkc)
                     chkc = chkc + 1
 
 
@@ -181,10 +220,9 @@ class asset_manager():
             print("Build motor bypassed.......")
 
 
-
         try:
             assert collect == 'home_content'
-            col = con['homecontent_items']
+            col = con['homecontent_item_draft']
             chkc = 0
             while chkc < updcount:
                 for hd in iteml:
@@ -195,7 +233,7 @@ class asset_manager():
                                }
                                }
                                )
-                    self.asset_stack('homecontent_items','homecontent_asset', 'Home Contents','HomeContent', chkc)
+                    self.asset_stack('homecontent_item_draft','homecontent_asset', 'Home Contents','HomeContent', chkc)
                     chkc = chkc + 1
 
             homec_pro = self.asset_strip('homecontent_asset', 'Home Contents')
@@ -206,10 +244,9 @@ class asset_manager():
             print("build homecontent bypassed......")
 
 
-
         try:
             assert collect == 'allrisks'
-            col = con['allrisks_item']
+            col = con['allrisks_item_draft']
             chkc = 0
             while chkc < updcount:
                 for ad in iteml:
@@ -221,7 +258,7 @@ class asset_manager():
                                }
                                )
 
-                    self.asset_stack('allrisks_item', 'allrisks_asset', 'All Risks', 'AllRisk', chkc)
+                    self.asset_stack('allrisks_item_draft', 'allrisks_asset', 'All Risks', 'AllRisk', chkc)
                     chkc = chkc + 1
 
             allrisk_pro = self.asset_strip('allrisks_asset', 'All Risks')
@@ -232,6 +269,62 @@ class asset_manager():
 
         except:
             print("build allrisk bypassed.......")
+
+        try:
+            assert collect == 'persliab'
+            col = con['﻿personal_liability_item_draft']
+            chkc = 0
+            while chkc < updcount:
+                for ad in iteml:
+                    col.update({'itemType': "PersonalLiability"},
+                               {'$set': {
+                                   'name': '' + ad + '',
+                                   'itemKey': '' + ad + ''
+                               }
+                               }
+                               )
+
+                    self.asset_stack('personal_liability_item_draft', 'personal_liability_asset', 'Personal Liabilities', '﻿PersonalLiability', chkc)
+                    chkc = chkc + 1
+
+            persliab_pro = self.asset_strip('personal_liability_asset', 'Personal Liabilities')
+            print("build persliab completed")
+
+
+            return persliab_pro
+
+        except:
+            print("build allrisk bypassed.......")
+
+        try:
+            assert collect == 'building'
+            col = con['﻿building_item_draft']
+            chkc = 0
+            while chkc < updcount:
+                for ad in iteml:
+                    col.update({'itemType': "Building"},
+                               {'$set': {
+                                   'name': '' + ad + '',
+                                   'itemKey': '' + ad + ''
+                               }
+                               }
+                               )
+
+                    self.asset_stack('﻿building_item_draft', '﻿building_asset', 'building', '﻿personal_liability', chkc)
+                    chkc = chkc + 1
+
+            allrisk_pro = self.asset_strip('allrisks_asset', 'All Risks')
+            print("build allrisks completed")
+
+
+            return allrisk_pro
+
+        except:
+            print("build allrisk bypassed.......")
+
+
+
+
 
 
 
@@ -428,7 +521,7 @@ class asset_manager():
         self.stacker = stacker
 
         if self.motor != 'ok':
-            col = con['vehicle_item']
+            col = con['vehicle_item_draft']
             motor_item = col.find_one({'name': 'Vehicle'})
             print(type(motor_item))
             del motor_item['_id']
@@ -457,7 +550,7 @@ class asset_manager():
 
 
         elif self.home != 'ok':
-            col = con['homecontent_items']
+            col = con['homecontent_item_draft']
             build_item = col.find_one({'name': 'HomeContent'})
             del build_item['_id']
 
@@ -510,6 +603,149 @@ class asset_manager():
         return asset_stack
 
 
+class Asset_endtoend():
+
+    def __init__(self):
+        pass
+
+
+    def create_quote(self):
+        motord = [{'make': 'FORD', 'model': 'MUSTANG 2.3 ECOBOOST', 'year': '2016'}]
+        content_sel = ['Refrigerator']
+        allrisk_sel = ['Jewellery']
+
+
+        asset_dict = {
+            'motor_list': motord,
+            'content_list': content_sel,
+            'allrisk_list': allrisk_sel
+        }
+
+        aops = asset_manager()
+        asset_api_req = aops.asset_composer(asset_dict)
+
+        return asset_api_req
+
+    def create_quote_check(self,asset_resp):
+
+        print(asset_resp)
+
+        asset_resp_dat = asset_resp[0]
+        asset_respcode = asset_resp[1]
+
+        if asset_respcode == 200:
+            #print("quote number", aquotn)
+            #print("Am Pass!!")
+
+            return 'PASS'
+
+        else:
+            print("Am Fail!!")
+            return 'FAIL'
+
+    def view_quote_check(self, asset_resp):
+
+        print(asset_resp)
+
+        asset_resp_dat = asset_resp[0]
+        asset_respcode = asset_resp[1]
+
+        if asset_respcode == 200 :
+            print("Am Pass!!")
+
+            return 'PASS'
+
+        else:
+            print("Am Fail!!")
+            return 'FAIL'
+
+    def calculate_prorata(self,quote_n):
+
+        quote_n =quote_n
+        calcp = asset_manager()
+        calcp_req = calcp.calculate_prorata(quote_n)
+
+        return calcp_req
+
+    def calculate_prorata_check(self, asset_resp):
+
+        print(asset_resp)
+
+        asset_resp_dat = asset_resp[0]
+        asset_respcode = asset_resp[1]
+
+        if asset_respcode == 200 :
+            print("Am Pass!!")
+
+            return 'PASS'
+
+        else:
+            print("Am Fail!!")
+            return 'FAIL'
+
+    def convtopol_check(self, asset_resp):
+
+        print(asset_resp)
+
+        asset_resp_dat = asset_resp[0]
+        asset_respcode = asset_resp[1]
+
+        if asset_respcode == 200 :
+            print("Am Pass!!")
+
+            return 'PASS'
+
+        else:
+            print("Am Fail!!")
+            return 'FAIL'
+
+    def view_policy_check(self, asset_resp):
+
+        print(asset_resp)
+
+        asset_resp_dat = asset_resp[0]
+        asset_respcode = asset_resp[1]
+
+        if asset_respcode == 200 :
+            print("Am Pass!!")
+
+            return 'PASS'
+
+        else:
+            print("Am Fail!!")
+            return 'FAIL'
+
+    def amendpolicy_check(self, asset_resp):
+
+        print(asset_resp)
+
+        asset_resp_dat = asset_resp[0]
+        asset_respcode = asset_resp[1]
+
+        if asset_respcode == 200 :
+            print("Am Pass!!")
+
+            return 'PASS'
+
+        else:
+            print("Am Fail!!")
+            return 'FAIL'
+
+    def acdpol_check(self, asset_resp):
+
+        print(asset_resp)
+
+        asset_resp_dat = asset_resp[0]
+        asset_respcode = asset_resp[1]
+
+        if asset_respcode == 200 :
+            print("Am Pass!!")
+
+            return 'PASS'
+
+        else:
+            print("Am Fail!!")
+            return 'FAIL'
 
 
 
