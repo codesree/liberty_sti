@@ -1,0 +1,336 @@
+CREATE QUOTE LOG ---------
+API Request(Asset API):--
+{
+     "quoteHeader": {
+          "srsId": "SRS_ID",
+          "consultantCode": "CCode",
+          "quoteNumber": "",
+          "productId": "ca495c59-25a8-4ea3-8caa-e4499605c29a",
+          "productVersion": "1.0",
+          "faAgreementNumber": "A12345",
+          "premiums": []
+     },
+     "persons": [
+          {
+               "personKey": "akintest001-person001",
+               "bankAccounts": [
+                    {
+                         "key": "akintest001-bankAccount001"
+                    }
+               ],
+               "contacts": [
+                    {
+                         "key": "akintest001-contact001"
+                    }
+               ],
+               "addresses": [
+                    {
+                         "key": "akintest001-address001"
+                    }
+               ],
+               "firstName": "Judge",
+               "surname": "Dredd",
+               "initials": "J",
+               "title": "MR",
+               "dateOfBirth": "1970-05-12T00:00:00",
+               "identityNumber": "7005126154097",
+               "idCountryOfIssue": "SA",
+               "isPensioner": false,
+               "isPolicyHolder": true,
+               "gender": "1",
+               "identityDocumentType": "1",
+               "maritalStatus": "SINGLE",
+               "communicationMethod": "3",
+               "popiConsentIndicator": true,
+               "fraudCriminalOffence": false,
+               "marketingConsentIndicator": true,
+               "judgement": false,
+               "insuranceDeclinedPreviously": false,
+               "itcDetails": {
+                    "itcKey": "123904",
+                    "itcConsent": true,
+                    "itcEffectiveDate": "2018-10-01T00:00:00",
+                    "itcLapse": 3,
+                    "ITCLoss": 34,
+                    "itcScore": 46,
+                    "itcLapseBand": "ITC Lapse band",
+                    "itcLossBand": "ITC Loss Band",
+                    "itcVersion": 1
+               }
+          }
+     ],
+     "contacts": [
+          {
+               "contactKey": "akintest001-contact001",
+               "text": "0833005765",
+               "contactType": "MOBILENO"
+          }
+     ],
+     "addresses": [
+          {
+               "addressKey": "akintest001-address001",
+               "addressType": "RISKADDRESS",
+               "addressLine1": "23 Test Street",
+               "addressLine2": "DURBAN NORTH",
+               "addressLine3": "",
+               "addressLine4": "DURBAN",
+               "postCode": "4051",
+               "province": "Kwazulu Natal",
+               "streetNumber": 23
+          }
+     ],
+     "bankAccounts": [
+          {
+               "bankAccountKey": "akintest001-bankAccount001",
+               "accountNumber": "330079166",
+               "name": "Judge",
+               "surname": "Dredd",
+               "initials": "J",
+               "idNumber": "7005126154097",
+               "branchCode": "051001",
+               "isValidated": true,
+               "validationResponse": "",
+               "validationOverridden": false,
+               "bankName": "Standard Bank",
+               "accountType": "SAVINGSACCOUNT"
+          }
+     ],
+     "quoteMembers": [
+          {
+               "personId": {
+                    "key": "akintest001-person001"
+               },
+               "isRequired": true,
+               "memberType": "POLICYHOLDER"
+          }
+     ],
+     "sections": [
+          {
+               "productSectionId": "7a0ffbb8-8c10-41cf-9197-6f81f5303bc1",
+               "productId": "7a0ffbb8-8c10-41cf-9195-6f81f5303bc1",
+               "name": "Vehicles",
+               "items": [
+                    {
+                         "name": "Vehicle",
+                         "itemType": "Vehicle",
+                         "sumInsured": 163300,
+                         "coverEffectiveDate": "2018-10-01T13:07:44.9379004+02:00",
+                         "versionDate": "2018-08-21T12:00:00.000Z",
+                         "renewalDate": "2019-11-01T00:00:00",
+                         "policyStartDate": "2018-10-01T12:00:00.000Z",
+                         "itemKey": "GRAND i10 1.25 FLUID",
+                         "policyFrequency": "MONTHLY",
+                         "claimsHistory": {
+                              "NoOfClaims0to12": 0,
+                              "NoOfClaims13to24": 0,
+                              "NoOfClaims25to36": 0
+                         },
+                         "childItems": [
+                              {
+                                   "name": "Parking",
+                                   "itemType": "Parking",
+                                   "sumInsured": 0,
+                                   "itemProperties": [
+                                        {
+                                             "name": "DayParkingAddressId",
+                                             "value": "akintest001-address001"
+                                        },
+                                        {
+                                             "name": "NightParkingAddressId",
+                                             "value": "akintest001-address001"
+                                        }
+                                   ]
+                              },
+                              {
+                                   "name": "driver",
+                                   "itemType": "driver",
+                                   "sumInsured": 0,
+                                   "childItems": [],
+                                   "itemProperties": [
+                                        {
+                                             "name": "PersonID",
+                                             "value": "akintest001-person001"
+                                        },
+                                        {
+                                             "name": "DriverType",
+                                             "value": "PRIMARY"
+                                        },
+                                        {
+                                             "name": "LicenceDateObtained",
+                                             "value": "2000-08-11T09:14:04Z"
+                                        },
+                                        {
+                                             "name": "LicenceDateExpired",
+                                             "value": "2020-08-11T09:14:04Z"
+                                        },
+                                        {
+                                             "name": "LicenceType",
+                                             "value": "LICENCE"
+                                        },
+                                        {
+                                             "name": "LicenceCode",
+                                             "value": "EB"
+                                        }
+                                   ]
+                              }
+                         ],
+                         "itemProperties": [
+                              {
+                                   "name": "Make",
+                                   "value": "HYUNDAI"
+                              },
+                              {
+                                   "name": "Model",
+                                   "value": "GRAND i10 1.25 FLUID"
+                              },
+                              {
+                                   "name": "MMCode",
+                                   "value": "64027655"
+                              },
+                              {
+                                   "name": "Year",
+                                   "value": "2016"
+                              },
+                              {
+                                   "name": "EngineNo",
+                                   "value": "23454323443"
+                              },
+                              {
+                                   "name": "VINNo",
+                                   "value": "52342212345"
+                              },
+                              {
+                                   "name": "VehicleLicenseDiskNumber",
+                                   "value": "12345543"
+                              },
+                              {
+                                   "name": "VehicleRegisterNumber",
+                                   "value": "fp78thgp"
+                              },
+                              {
+                                   "name": "LicensePlateNumber",
+                                   "value": "WWE137GP"
+                              },
+                              {
+                                   "name": "Colour",
+                                   "value": "white"
+                              },
+                              {
+                                   "name": "ExcessWaiver",
+                                   "value": "false"
+                              },
+                              {
+                                   "name": "Financed",
+                                   "value": "false"
+                              },
+                              {
+                                   "name": "LoanAmount",
+                                   "value": "163000"
+                              },
+                              {
+                                   "name": "CoverOption",
+                                   "value": "MARKET"
+                              },
+                              {
+                                   "name": "AlarmType",
+                                   "value": "FACTORY"
+                              },
+                              {
+                                   "name": "hasImmobiliser",
+                                   "value": "true"
+                              },
+                              {
+                                   "name": "VehicleRebuilt",
+                                   "value": "false"
+                              },
+                              {
+                                   "name": "Cover",
+                                   "value": "COMPREHENSIVE"
+                              },
+                              {
+                                   "name": "Usage",
+                                   "value": "SOCIALANDTOANDFROMWORK"
+                              },
+                              {
+                                   "name": "CarHireOption",
+                                   "value": "CLASSC"
+                              },
+                              {
+                                   "name": "NewVehicle",
+                                   "value": "false"
+                              },
+                              {
+                                   "name": "HasTrackingDevice",
+                                   "value": "TRACKING"
+                              },
+                              {
+                                   "name": "ParkedOvernight",
+                                   "value": "INLOCKEDGARAGE"
+                              },
+                              {
+                                   "name": "BusinessCategory",
+                                   "value": "PERSONALSERVICES"
+                              },
+                              {
+                                   "name": "BusinessNature",
+                                   "value": "INSURABLE"
+                              },
+                              {
+                                   "name": "CommodityCarrying",
+                                   "value": "ART"
+                              },
+                              {
+                                   "name": "CrossBorder",
+                                   "value": "DONTCROSSBORDER"
+                              },
+                              {
+                                   "name": "Radius",
+                                   "value": "15"
+                              },
+                              {
+                                   "name": "CarryGoods",
+                                   "value": "false"
+                              },
+                              {
+                                   "name": "Transmission",
+                                   "value": "AUTOMATIC"
+                              },
+                              {
+                                   "name": "itemStatus",
+                                   "value": "ACTIVE"
+                              },
+                              {
+                                   "name": "itemKey",
+                                   "value": "vehicleTestKey"
+                              },
+                              {
+                                   "name": "isCodeIII",
+                                   "value": false
+                              },
+                              {
+                                   "name": "isRebuild",
+                                   "value": false
+                              },
+                              {
+                                   "name": "policyFrequency",
+                                   "value": "MONTHLY"
+                              },
+                              {
+                                   "name": "performanceModification",
+                                   "value": false
+                              },
+                              {
+                                   "name": "LoanStartDate",
+                                   "value": "2018/10/01 12:00:00 AM"
+                              },
+                              {
+                                   "name": "voluntaryExcess",
+                                   "value": 2000
+                              }
+                         ]
+                    }
+               ]
+          }
+     ]
+}
+                    

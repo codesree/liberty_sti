@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentsResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:standardbank.co.za:services:Business:Maven">
+  <MessageID xmlns="">1</MessageID>
+  <MessageDescription xmlns="">Your request was successfully processed!</MessageDescription>
+  <AccidentFrequency xmlns="">1</AccidentFrequency>
+  <AccidentSeverity xmlns="">274.64</AccidentSeverity>
+  <TheftFrequency xmlns="">1</TheftFrequency>
+  <TheftSeverity xmlns="">5897.46</TheftSeverity>
+  <LightningFrequency xmlns="">1</LightningFrequency>
+  <LightningSeverity xmlns="">92.43</LightningSeverity>
+  <OtherFrequency xmlns="">1</OtherFrequency>
+  <OtherSeverity xmlns="">761.84</OtherSeverity>
+  <AccidentFrequency_TA xmlns="">0.75</AccidentFrequency_TA>
+  <AccidentSeverity_TA xmlns="">0.9</AccidentSeverity_TA>
+  <TheftFrequency_TA xmlns="">0.75</TheftFrequency_TA>
+  <TheftSeverity_TA xmlns="">0.91475</TheftSeverity_TA>
+  <LightningFrequency_TA xmlns="">0.75</LightningFrequency_TA>
+  <LightningSeverity_TA xmlns="">7.16762</LightningSeverity_TA>
+  <OtherFrequency_TA xmlns="">0.75</OtherFrequency_TA>
+  <OtherSeverity_TA xmlns="">0.85</OtherSeverity_TA>
+  <AccidentRiskPremium xmlns="">185.38</AccidentRiskPremium>
+  <TheftRiskPremium xmlns="">4,046.05</TheftRiskPremium>
+  <LightningRiskPremium xmlns="">496.89</LightningRiskPremium>
+  <OtherRiskPremium xmlns="">485.67</OtherRiskPremium>
+  <RiskPremium xmlns="">5,213.99</RiskPremium>
+  <TargetLossRatio xmlns="">0.61</TargetLossRatio>
+  <FixedCosts xmlns="">134.64</FixedCosts>
+  <Premium_Out xmlns="">839.60</Premium_Out>
+  <SumInsured_Out xmlns="">500,000.00</SumInsured_Out>
+  <DiscountType_Out xmlns="">P</DiscountType_Out>
+  <DiscountAmount_Out xmlns="">0.00</DiscountAmount_Out>
+  <Discount_Loading_Out xmlns="">D</Discount_Loading_Out>
+  <LimitedPremium_Out xmlns="">839.60</LimitedPremium_Out>
+  <FrequencyExcess_Out xmlns="">0.00</FrequencyExcess_Out>
+  <SeverityExcess_Out xmlns="">500.00</SeverityExcess_Out>
+  <RE_Excess_Out xmlns="">500.00</RE_Excess_Out>
+  <LimitedExcess_Out xmlns="">500.0</LimitedExcess_Out>
+  <QuoteNumber xmlns="">SHL000013207</QuoteNumber>
+  <ItemNumber xmlns="">0</ItemNumber>
+</ContentsResponse>

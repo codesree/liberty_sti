@@ -23,7 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('tag_home/', views.index, name='tag_home'),
     path('beanstalk_forum/', views.beanstalk_home, name='beanstalk_home'),
-    path('api_tag/static/images'),
 
     path('beanstalk_policy/', views.beanstalk_policy, name='beanstalk_exe2'),
 

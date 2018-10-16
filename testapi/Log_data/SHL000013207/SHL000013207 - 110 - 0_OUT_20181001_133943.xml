@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AllRiskResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:standardbank.co.za:services:Business:Maven">
+  <MessageID xmlns="">1</MessageID>
+  <MessageDescription xmlns="">Your request was successfully processed!</MessageDescription>
+  <AllRiskFrequency xmlns="">1</AllRiskFrequency>
+  <AllRiskSeverity xmlns="">1106.38219</AllRiskSeverity>
+  <OtherFrequency xmlns="">0</OtherFrequency>
+  <OtherSeverity xmlns="">0</OtherSeverity>
+  <AllRiskFrequency_TA xmlns="">1</AllRiskFrequency_TA>
+  <AllRiskSeverity_TA xmlns="">1</AllRiskSeverity_TA>
+  <OtherFrequency_TA xmlns="">1</OtherFrequency_TA>
+  <OtherSeverity_TA xmlns="">1</OtherSeverity_TA>
+  <AllRiskRiskPremium xmlns="">1106.38</AllRiskRiskPremium>
+  <OtherRiskPremium xmlns="">0</OtherRiskPremium>
+  <RiskPremium xmlns="">1106.38</RiskPremium>
+  <TargetLossRatio xmlns="">0.56</TargetLossRatio>
+  <FixedCosts xmlns="">29.76</FixedCosts>
+  <Premium_Out xmlns="">194.26</Premium_Out>
+  <SumInsured_Out xmlns="">10000.0</SumInsured_Out>
+  <DiscountType_Out xmlns="">P</DiscountType_Out>
+  <DiscountAmount_Out xmlns="">0.0</DiscountAmount_Out>
+  <Discount_Loading_Out xmlns="">D</Discount_Loading_Out>
+  <LimitedPremium_Out xmlns="">194.26</LimitedPremium_Out>
+  <FrequencyExcess_Out xmlns="">0</FrequencyExcess_Out>
+  <SeverityExcess_Out xmlns="">0</SeverityExcess_Out>
+  <RE_Excess_Out xmlns="">0</RE_Excess_Out>
+  <LimitedExcess_Out xmlns="">1000</LimitedExcess_Out>
+  <QuoteNumber xmlns="">SHL000013207</QuoteNumber>
+  <ItemNumber xmlns="">0</ItemNumber>
+</AllRiskResponse>

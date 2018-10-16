@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+{% extends 'tag_home.html' %}
+
+{% load static %}
+{% block body_block %}
+    <div class="container">
+        <h3><span class="label label-default active">Asset API - End to End flow - Test Suite</span></h3>
+        <br>
+    <div class="row">
+    <div class="col-sm-8">
+
+ <!------------- TEST EXECUTION CONTAINER FOR HOME CONTENTS ---------------------->
+
+          <div class="panel panel-primary">
+    <div class="panel-body">
+        {% if tstat == 'assetdone' %}
+                <div class="row">
+      <div class="col-sm-8"><h5>TEST CASES - ASSET API END TO END PROCESS</h5></div>
+      <div class="col-sm-4">
+         <p class="asretestexe"><button class="btn btn-primary active"><span class="glyphicon glyphicon-play"></span>Re-Run</button></p>
+                    <div class="asload">
+    </div>
+
+      </div>
+    </div>
+    <div class="row">
+        <div class="exestat">
+               {% if tstat == 'assetdone' %}
+              {% if testrep and logfile %}
+  <blockquote>
+      <h5><p class="text-success">Execution Completed successfully......</p></h5>
+      <br>
+    <footer>  <div class="col-xs-4"><a href="{% url 'download_log' %}"><button type="button" class="btn btn-default active">Download test log</button></a></div>
+                      <div class="col-xs-3"><a href="{% url 'test_report' %}"><button type="button" class="btn btn-info active">View test report</button></a></div>
+</footer>
+  </blockquote>
+              {% else %}
+                    <blockquote>
+    <p><code>Execution Failed.............please see below info</code></p>
+                        <br>
+    <footer>Problem might have been with test report/test log generation. Please contact admin for more clarity ..</p>
+
+</footer>
+  </blockquote>
+              {% endif %}
+          {% endif %}
+
+
+        </div>
+    </div>
+            {% else %}
+                <div class="row">
+      <div class="col-sm-6"><h5>TEST CASES - ASSET API END TO END PROCESS</h5></div>
+      <div class="col-sm-6">
+                 <p class="astestexe"><button class="btn btn-primary"><span class="glyphicon glyphicon-play"></span> Run</button></p>
+          <div class="asload">
+    </div>
+      </div>
+    </div>
+                {% endif %}
+        <div class="panel panel-info">
+      <div class="panel-heading">
+        <p class="panel-title">
+          <a data-toggle="collapse" href="#collapse1">Test criteria's defined for Asset API end to end</a>
+        </p>
+      </div>
+      <div id="collapse1" class="panel-collapse collapse">
+        <ul class="list-group">
+                      <li class="list-group-item">Create quote from asset api for liberty sti</li>
+                      <li class="list-group-item">Amend quote from Asset api</li>
+                      <li class="list-group-item">Accept and Calulate prorata from Asset api for the create quote</li>
+                      <li class="list-group-item">Convert quote to Policy from Asset API</li>
+                      <li class="list-group-item">View policy from Asset api test</li>
+                      <li class="list-group-item">Amend Policy from Asset API</li>
+                      <li class="list-group-item">Accept / Decline policy amendment for Endorsement</li>
+                      <li class="list-group-item">View policy from Asset API  after endorsement</li>
+
+        </ul>
+      </div>
+    </div>
+
+    </div>
+    </div>
+
+
+    </div>
+    <div class="col-sm-4">
+                  <div class="media">
+    <div class="media-left media-top">
+      <img src="{% static "images/Astronaut.png" %}" class="media-object" style="width:80px">
+    </div>
+    <div class="media-body">
+      <h5 class="media-heading">INFO TAG</h5>
+      <blockquote>
+          <p style="font-family:'Nanum Gothic';font-size: 13px">API testing with different rating factors<br>
+              API Requests are processed at the gateway and produces the following:</p>
+        <p style="font-family:'Courier New';font-size: 14px">- Automated Test flow logs with request and response<br>
+        - Test Report</p></blockquote>
+
+         </div>
+  </div>
+
+
+    </div>
+    </div>
+    </div>
+
+<!------------------------ TEST SUITE EXE HANDLER ------------------------------>
+    <script>
+
+$(document).ready(function() {
+
+    var aslwrap = $(".asload");
+
+
+
+    var asteststart = $(".astestexe");
+    var asretest = $(".asretestexe");
+;
+
+    var exestat = $(".exestat");
+
+        $(asteststart).click(function(e){
+                $(asteststart).hide();
+                        e.preventDefault();
+                          $(aslwrap).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+
+
+                    '</div>');
+                                  document.location.href="{% url "asset_end_to_end" %}"
+
+        });
+
+        $(asretest).click(function(e){
+                $(asretest).hide();
+                $(exestat).hide();
+                        e.preventDefault();
+                          $(aslwrap).append('<div class="loading"><h5>Executing...</h5>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                    '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+                                            '  <div class="loading-bar"></div>\n' +
+
+
+                    '</div>');
+                                  document.location.href="{% url "asset_end_to_end" %}"
+
+        });
+
+});
+
+</script>
+
+{% endblock %}
