@@ -32,11 +32,13 @@ STATIC_DIR = os.path.join(BASE_DIR,"static")
 SECRET_KEY = 'b(_=8mkl+hpoq#2)18uoeb+fzb17@qr#_mzmp4)x-$t@_*    p0zp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['api-env.qvvumpvvq4.us-east-1.elasticbeanstalk.com',
+ALLOWED_HOSTS = [
+                 'api-liberty.9wudx8rfqa.us-east-1.elasticbeanstalk.com',
                  'ec2-52-71-252-174.compute-1.amazonaws.com',
-                 '127.0.0.1']
+                 '127.0.0.1'
+                ]
 
 
 # Application definition
@@ -161,7 +163,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'static/')
 
 
 LOGIN_URL = '/test_api/login'
