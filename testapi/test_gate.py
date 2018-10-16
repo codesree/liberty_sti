@@ -552,13 +552,13 @@ class gateway_process():
         elif funcp == "convert_to_policy":
             req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy//"
         elif funcp == "view_policy":
-            req_url = "http://prbk-pa001sap4v/Insurance.Quoting2/api/Policies/"
+            req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Policies/"
         elif funcp == "amend_quote":
-            req_url = "http://prbk-pa001sap4v/Insurance.Quoting2/api/Quotes/"
+            req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/"
         elif funcp == "process_policy":
-            req_url = "http://prbk-pa001sap4v/Insurance.Quoting2/api/Policies/Process"
+            req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Policies/Process"
         elif funcp == "accept_policy":
-            req_url = "http://prbk-pa001sap4v/Insurance.Quoting2/api/Policies/AcceptPolicyAmendment/"
+            req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Policies/AcceptPolicyAmendment/"
 
     def auth_token(self):
 
