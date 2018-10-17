@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 import datetime
 import json
+import re
 
 
 class asset_manager():
@@ -38,7 +39,6 @@ class asset_manager():
         except:
             print('error in processing calculate prorata quote')
             return accept_q
-
 
     def process_carlist(self):
 
@@ -88,10 +88,9 @@ class asset_manager():
             emp = []
             return emp
 
-
-
     def asset_composer(self,asset_dict):
 
+        global con
 
         asset_secl = []
 
@@ -143,7 +142,7 @@ class asset_manager():
             assert len(asset_dict['building_list']) != 0
             print("building update processing ....")
             builddl = asset_dict['building_list']
-            buldlen = len(allrkdl)
+            buldlen = len(builddl)
             asset_b = self.build_asset('building',builddl,buldlen)
 
             asset_secl.append(asset_b)
@@ -156,15 +155,15 @@ class asset_manager():
 
         try:
             assert len(asset_dict['persliab_list']) != 0
-            print("building update processing ....")
+            print("PersonalLiablity update processing ....")
             persldl = asset_dict['persliab_list']
-            perllen = len(allrkdl)
+            perllen = len(persldl)
             asset_p = self.build_asset('persliab',persldl,perllen)
 
             asset_secl.append(asset_p)
 
         except:
-            print('no update scheduled for Buildings')
+            print('no update scheduled for PersonalLiablity')
 
         # Build Sections - DESTINY
 
@@ -272,19 +271,23 @@ class asset_manager():
 
         try:
             assert collect == 'persliab'
-            col = con['﻿personal_liability_item_draft']
+
+            col = con['personal_liability_item_draft']
             chkc = 0
+            print("am in persliab update")
+
             while chkc < updcount:
                 for ad in iteml:
-                    col.update({'itemType': "PersonalLiability"},
-                               {'$set': {
-                                   'name': '' + ad + '',
-                                   'itemKey': '' + ad + ''
-                               }
+                    print('inside persliab update...')
+                    col.update({"itemType": "PersonalLiability" },
+                               {
+                                   '$set': {
+                                       "name": ''+ad+'',
+                                       "itemKey":''+ad+''
+                                   }
                                }
                                )
-
-                    self.asset_stack('personal_liability_item_draft', 'personal_liability_asset', 'Personal Liabilities', '﻿PersonalLiability', chkc)
+                    self.asset_stack('personal_liability_item_draft', 'personal_liability_asset', 'Personal Liabilities', 'PersonalLiability', chkc)
                     chkc = chkc + 1
 
             persliab_pro = self.asset_strip('personal_liability_asset', 'Personal Liabilities')
@@ -294,14 +297,19 @@ class asset_manager():
             return persliab_pro
 
         except:
-            print("build allrisk bypassed.......")
+            print("build PersonalLiability bypassed.......")
 
         try:
             assert collect == 'building'
-            col = con['﻿building_item_draft']
+            print("am in building update")
+            col = con['building_item_draft']
             chkc = 0
+            print("am in building update")
+            print(updcount)
             while chkc < updcount:
+                print("inside update q")
                 for ad in iteml:
+                    print("ad :",ad)
                     col.update({'itemType': "Building"},
                                {'$set': {
                                    'name': '' + ad + '',
@@ -309,35 +317,66 @@ class asset_manager():
                                }
                                }
                                )
-
-                    self.asset_stack('﻿building_item_draft', '﻿building_asset', 'building', '﻿personal_liability', chkc)
+                    print("building update complete...")
+                    self.asset_stack("building_item_draft", "building_asset", "Buildings", "Building", chkc)
                     chkc = chkc + 1
 
-            allrisk_pro = self.asset_strip('allrisks_asset', 'All Risks')
-            print("build allrisks completed")
+            building_pro = self.asset_strip("building_asset", "Buildings")
+            print("build Building asset completed")
 
 
-            return allrisk_pro
+            return building_pro
 
         except:
-            print("build allrisk bypassed.......")
-
-
-
-
-
+            print("build Building asset bypassed.......")
 
 
     def asset_stack(self,load_item,load_asset,load_assetn,load_itemn,updc):
+        print("inside asset stack..")
 
-        col =con[load_item]
-        asset_item = col.find_one({'itemType':load_itemn})
+        # if load_item == "building_item_draft":
+        #     col = con['building_item_draft']
+        # elif load_item == "personal_liability_item_draft":
+        #     col = con['personal_liability_item_draft']
+        # else:
+        col = con[load_item]
+        # load_col = load_item
+        # col = con.load_col
+
+        print(con.list_collection_names())
+
+        asset_item = col.find_one(
+            {
+                'itemType': load_itemn
+            })
+        print(asset_item)
+
         del asset_item['_id']
+        print(asset_item)
 
-        col =con[load_asset]
+        print(load_assetn)
+        print(load_asset)
+
+        print(type(load_asset))
+
+
+        # if load_asset == "building_asset":
+        #     col = con["building_asset"]
+        #     load_asset_name = "Buildings"
+        #     print("assigned building asset..")
+        # elif load_asset == "personal_liability_asset":
+        #     col = con["personal_liability_asset"]
+        #     load_asset_name = "Personal Liabilities"
+        #     print("assigned personal liability asset..")
+        # else:
+        col = con[load_asset]
+        load_asset_name = load_assetn
+        print("default")
 
         if updc == 0:
-            col.update({'name': load_assetn},
+            col.update({
+                        'name': load_asset_name
+                        },
                        {
                            '$set':
                                {
@@ -346,7 +385,8 @@ class asset_manager():
                        }
                        )
 
-        col.update({'name':load_assetn },
+        col.update({'name': load_asset_name
+                    },
                    {
                        '$addToSet':
                            {
@@ -357,12 +397,18 @@ class asset_manager():
 
     def asset_strip(self,collect,assetn):
 
+        # if assetn == "Buildings":
+        #     collect = "building_asset"
+        #     assetn = "Buildings"
+        # elif assetn == "Personal Liabilities":
+        #     collect = "personal_liability_asset"
+        #     assetn = "Personal Liabilities"
+
         col = con[collect]
         asset_data = col.find_one({'name':assetn})
 
         del asset_data['_id']
         return asset_data
-
 
 
     def asset_comb(self,assetsec,assetn):

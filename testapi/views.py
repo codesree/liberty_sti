@@ -312,7 +312,9 @@ def beanstalk_asset(request):
 
         try:
 
-            assert (motor_sel != [] or content_sel != [] or allrisk_sel != [])
+            assert (motor_sel != [] or content_sel != [] or allrisk_sel != [] or
+                    building_sel != [] or persliab_sel != [])
+
 
             aops = asset_manager()
             print('motor selection',motor_sel)

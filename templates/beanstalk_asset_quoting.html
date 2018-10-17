@@ -112,14 +112,17 @@ $(document).ready(function() {
           <div class="col-sm-5">
                     <input type= "submit" class="btn btn-default active btn-sm btn-block" data-toggle="tooltip" data-placement="left" title="Post request" name="amqpost" id="amqpost"
              value="WOULD YOU LIKE TO AMEND QUOTE?"></div>
+               </div>
                {% endif %}
-          </div><div class="loadman"></div>
+        <div class="loadman"></div>
 
            {% else %}
            {% endif %}
       </form>
+                    {% if pantit == 'crq' %}
                    <div class="loadman"></div>
                 </div>
+                        {% endif %}
                     {% endif %}
 </div>
             </div>
