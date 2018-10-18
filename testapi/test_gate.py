@@ -447,7 +447,7 @@ class external_gateway_process():
             req_url = 'https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/CalculateProRata'
         elif funcp == "convert_to_policy":
             auth_tok = self.auth_token()
-            req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy//"
+            req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy/"
         elif funcp == "view_policy":
             auth_tok = self.auth_token()
             req_url = "http://prbk-pa001sap4v/Insurance.Quoting2/api/Policies/"
@@ -505,6 +505,8 @@ class external_gateway_process():
     def convtop_exec(self,policy_n):
         req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy/"
         req_url = req_url + policy_n
+        print(req_url)
+
         response = requests.post(req_url,headers=head)
 
 
@@ -550,7 +552,7 @@ class gateway_process():
         elif funcp == "calculate_prorata":
             req_url = 'https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/CalculateProRata'
         elif funcp == "convert_to_policy":
-            req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy//"
+            req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy/"
         elif funcp == "view_policy":
             req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Policies/"
         elif funcp == "amend_quote":
@@ -617,8 +619,10 @@ class gateway_process():
 
     def convtop_exec(self,policy_n):
 
-        req_url = "http://prbk-pa001sap4v/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy/"
+        req_url = "https://gatewaynp.standardbank.co.za:5543/npextorg/extnonprod/Insurance.Quoting2/api/Quotes/ConvertQuoteToPolicy/"
+
         req_url = req_url + policy_n
+        print(req_url)
 
         try:
             response = requests.post(req_url, headers=head)
