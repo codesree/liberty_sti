@@ -23,7 +23,7 @@
     "gunzip-maybe": "1.2.1",
     "https-proxy-agent": "1.0.0",
     "init-package-json": "1.9.1",
-    "minimist": "1.2.0",
+    "minimist": "1.2.5",
     "mkdirp-then": "1.2.0",
     "node-uuid": "1.4.3",
     "npm-package-arg": "4.1.0",
